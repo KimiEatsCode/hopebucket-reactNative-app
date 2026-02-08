@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "hopebucket-react-native",
+    "name": "HopeBucket",
     "slug": "hopebucket-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,9 +13,14 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hopebucket.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.hopebucket.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -24,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7e1332d4-f712-43df-9957-dbef1e91fdc5"
+      }
     }
   }
 }

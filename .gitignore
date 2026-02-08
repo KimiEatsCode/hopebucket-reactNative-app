@@ -136,3 +136,6 @@ dist
 .pnp.*
 .expo/devices.json
 .expo/README.md
+eas.json
+google-service-account-key.json
+publishing-plan.txt

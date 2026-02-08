@@ -6,7 +6,12 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:ios": "eas build --platform ios --profile production",
+    "build:android": "eas build --platform android --profile production",
+    "build:all": "eas build --platform all --profile production",
+    "submit:ios": "eas submit --platform ios",
+    "submit:android": "eas submit --platform android"
   },
   "dependencies": {
     "@expo-google-fonts/cabin": "^0.4.2",
@@ -26,5 +31,8 @@
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "eas-cli": "^16.32.0"
+  }
 }
