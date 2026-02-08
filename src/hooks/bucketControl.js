@@ -31,10 +31,9 @@ const LottieControlBucket = () => {
       style={{
         position: "absolute",
         zIndex: -1,
-        left: 0,
-        top: 100,
         height: "70%",
         width: "100%",
+        top: "15%", // Centers vertically: (100%-70%)/2=15%
       }}
     />
   );

@@ -179,7 +179,6 @@ function NavBar() {
             <TextInput
               ref={inputRef}
               style={styles.textInput}
-              placeholder="What is something positive that happened or something you did that gives you hope today?"
               placeholderTextColor="#999"
               value={input}
               onChangeText={setInput}
@@ -262,7 +261,7 @@ function NavBar() {
         ) : (
           <>
             <TouchableOpacity
-              style={[styles.navButton, styles.flexGrow1]}
+              style={[styles.navButton, styles.flexGrow2]}
               onPress={toggleListModal}
             >
               <Ionicons
@@ -270,13 +269,13 @@ function NavBar() {
                 size={SIZES.iconFont}
                 color={COLORS.white}
               />
-              <Text style={styles.navButtonText}>View List</Text>
+              <Text style={styles.navButtonText}>View</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[
                 styles.navButton,
-                styles.flexGrow3,
+                styles.flexGrow2,
                 totalHope >= 3 && styles.disabledButton,
               ]}
               onPress={handleOpen}
@@ -287,7 +286,7 @@ function NavBar() {
                 size={SIZES.iconFont}
                 color={COLORS.white}
               />
-              <Text style={styles.navButtonText}>Add Item</Text>
+              <Text style={styles.navButtonText}>Add</Text>
             </TouchableOpacity>
           </>
         )}
@@ -315,9 +314,9 @@ const styles = StyleSheet.create({
   },
   suggestionsLabel: {
     fontFamily: FONTS.body,
-    fontSize: 14,
-    color: COLORS.textDark,
-    marginBottom: 8,
+    fontSize: 20,
+    color: COLORS.primary,
+    marginBottom: 10,
   },
   suggestionsScroll: {
     marginBottom: 12,
@@ -327,22 +326,22 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   suggestionChip: {
-    backgroundColor: COLORS.lightSkyBlue,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 20,
   },
   suggestionText: {
     fontFamily: FONTS.body,
-    fontSize: 13,
-    color: COLORS.textDark,
+    fontSize: 20,
+    color: COLORS.white,
   },
   textInput: {
     borderWidth: 2,
     borderColor: COLORS.primary,
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
+    fontSize: 20,
     fontFamily: FONTS.body,
     minHeight: 100,
     marginBottom: 16,
@@ -389,7 +388,7 @@ const styles = StyleSheet.create({
   navButtonText: {
     color: COLORS.white,
     fontFamily: FONTS.body,
-    fontSize: 15,
+    fontSize: 24,
     fontWeight: "600",
   },
   newListButton: {
@@ -400,6 +399,9 @@ const styles = StyleSheet.create({
   },
   flexGrow1: {
     flex: 1,
+  },
+  flexGrow2: {
+    flex: 2,
   },
   flexGrow3: {
     flex: 3,

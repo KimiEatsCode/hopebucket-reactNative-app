@@ -50,8 +50,8 @@ function ListModal() {
 
   const headerText =
     totalHope < 3
-      ? `Today ${todayStr} - ${totalHope} of 3 Completed`
-      : `Congrats! You filled your HopeBucket! ${totalHope} of 3 Completed. List expires at midnight.`;
+      ? `${totalHope} of 3 Completed`
+      : `${totalHope} of 3 Completed`;
 
   return (
     <Modal
@@ -78,17 +78,12 @@ function ListModal() {
             <View style={styles.modalBody}>
               {totalHope === 0 && (
                 <View style={styles.instructionsContainer}>
-                  <Text style={styles.instructions}>
+                  <Text style={styles.modalTitle}>Happy {todayStr}! </Text>
+                <Text style={styles.instructions}>
                     Add 3 items of hope to be able to copy and share. Your
                     bucket resets each day at midnight. Each day is a new
                     beginning!
                   </Text>
-                </View>
-              )}
-
-              {totalHope < 3 && (
-                <View style={styles.lottieContainer}>
-                  <LottieControlNavMsg />
                 </View>
               )}
 
@@ -98,7 +93,15 @@ function ListModal() {
                 keyExtractor={(item) => String(item.id)}
                 style={styles.flatList}
                 contentContainerStyle={styles.flatListContent}
+                showsVerticalScrollIndicator={true}
+                persistentScrollbar={true}
               />
+
+              {totalHope < 3 && (
+                <View style={styles.lottieContainer}>
+                  <LottieControlNavMsg />
+                </View>
+              )}
             </View>
           </View>
         </SafeAreaView>
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     flex: 1,
     fontFamily: FONTS.heading,
-    fontSize: 16,
+    fontSize: SIZES.subheadingFont,
     fontWeight: "bold",
     color: COLORS.primary,
     lineHeight: 22,
@@ -159,32 +162,33 @@ const styles = StyleSheet.create({
   },
   instructionsContainer: {
     alignItems: "center",
-    paddingVertical: SIZES.paddingMedium,
+    paddingVertical: SIZES.paddingLarge,
     paddingHorizontal: SIZES.paddingLarge,
   },
   instructions: {
     fontFamily: FONTS.body,
-    fontSize: SIZES.bodyFont,
+    fontSize: SIZES.subheadingFont,
     color: COLORS.primary,
     textAlign: "center",
-    lineHeight: 24,
+    lineHeight: 28,
   },
   lottieContainer: {
-    height: 200,
+    flex: 1,
     width: "100%",
-    position: "relative",
   },
   flatList: {
     flex: 1,
   },
   flatListContent: {
+    justifyContent: "flex-start",
     paddingBottom: SIZES.paddingLarge,
+
   },
   listItem: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginTop: 6,
-    paddingVertical: 4,
+    marginTop: 12,
+    paddingVertical: 6,
   },
   deleteButton: {
     paddingTop: 2,

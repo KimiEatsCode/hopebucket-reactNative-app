@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Linking } from "react-native";
 import { ListContext } from "../contexts/ListContext";
 import { ModalContext } from "../contexts/ModalContext";
 import LottieControlConfetti from "../hooks/confettiControl";
@@ -31,7 +31,14 @@ function Bucket() {
         <Text style={styles.topMessage}>{getMessage()}</Text>
         {copyMessage ? (
           <Text style={styles.subMessage}>
-            Find a background on Pixabay and share to social.
+            Find a background on{" "}
+            <Text
+              style={styles.link}
+              onPress={() => Linking.openURL("https://pixabay.com")}
+            >
+              Pixabay
+            </Text>{" "}
+            and share to social.
           </Text>
         ) : null}
       </View>
@@ -52,7 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingTop: 10,
   },
   messageRow: {
     alignItems: "center",
@@ -69,17 +75,20 @@ const styles = StyleSheet.create({
   },
   subMessage: {
     fontFamily: FONTS.body,
-    fontSize: SIZES.bodyFont,
+    fontSize: SIZES.subheadingFont,
     color: COLORS.primary,
     textAlign: "center",
-    marginTop: 4,
+    marginTop: 15,   
+  },
+  link: {
+    textDecorationLine: "underline",
+    fontWeight: "bold",
   },
   bucketIcon: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: 10,
   },
   hopeCount: {
     fontFamily: FONTS.heading,
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: "center",
     position: "relative",
-    top: 70,
+    top: 10,
     width: 198,
     zIndex: 10,
   },
