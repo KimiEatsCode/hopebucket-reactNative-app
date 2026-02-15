@@ -19,8 +19,9 @@ import { ModalContext } from "../contexts/ModalContext";
 import { COLORS, FONTS, SIZES } from "../styles/theme";
 
 const SUGGESTIONS = [
+  "Even though I am sad, mad something I can do to get through the day is ",
   "I am grateful for ",
-  "A person or thing that gives me hope is ",
+  "A person, thing, event, or animal that gives me hope is ",
   "An action I took that gives me hope is ",
   "Something I can look forward to is ",
   "Something that happened today that gives me hope is ",
