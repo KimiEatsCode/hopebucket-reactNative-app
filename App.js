@@ -8,9 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useFonts } from "expo-font";
-import {
-  DeliciousHandrawn_400Regular,
-} from "@expo-google-fonts/delicious-handrawn";
+import { Sriracha_400Regular } from "@expo-google-fonts/sriracha";
 import { Cabin_400Regular, Cabin_700Bold } from "@expo-google-fonts/cabin";
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 
@@ -28,7 +26,7 @@ import { COLORS, FONTS, SIZES } from "./src/styles/theme";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    DeliciousHandrawn_400Regular,
+    Sriracha_400Regular,
     Cabin_400Regular,
     Cabin_700Bold,
     Roboto_400Regular,
@@ -87,7 +85,6 @@ const styles = StyleSheet.create({
   logoName: {
     fontFamily: FONTS.logo,
     fontSize: SIZES.logoFont,
-    fontWeight: "bold",
     textAlign: "center",
     color: COLORS.primary,
     marginTop: 10,

@@ -18,8 +18,8 @@ function Bucket() {
   const toggleListModal = () => setShowListModal(!showListModal);
 
   const getMessage = () => {
-    if (copyMessage) return copyMessage;
-    if (totalHope === 3) return "Congrats! You filled your hope bucket!";
+    if (copyMessage && totalHope === 3) return copyMessage;
+    if (totalHope === 3) return "Congrats! You filled your HopeBucket!";
     if (totalHope < 3) return "Add hope to fill up your HopeBucket!";
     return "";
   };
@@ -37,8 +37,7 @@ function Bucket() {
               onPress={() => Linking.openURL("https://pixabay.com")}
             >
               Pixabay
-            </Text>{" "}
-            and share to social.
+            </Text>
           </Text>
         ) : null}
       </View>
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.headingFont,
     color: COLORS.primary,
     textAlign: "center",
-    lineHeight: 30,
+    lineHeight: 35,
   },
   subMessage: {
     fontFamily: FONTS.body,
@@ -89,6 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    
   },
   hopeCount: {
     fontFamily: FONTS.heading,

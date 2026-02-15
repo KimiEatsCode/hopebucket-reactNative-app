@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ListContext } from "../contexts/ListContext";
 import { ModalContext } from "../contexts/ModalContext";
 import LottieControlNavMsg from "../hooks/navMsgControl";
-import { COLORS, FONTS, SIZES } from "../styles/theme";
+import { COLORS, FONTS, SIZES, BORDERS } from "../styles/theme";
 
 function ListModal() {
   const listContext = useContext(ListContext);
@@ -29,7 +30,8 @@ function ListModal() {
   const dd1 = today.getDate();
   const mm = today.getMonth() + 1;
   const yyyy = today.getFullYear();
-  const todayStr = mm + "/" + dd1 + "/" + yyyy;
+  const dayOfWeek = today.toLocaleDateString("en-US", { weekday: "long" });
+  const todayStr = dayOfWeek + " " + mm + "/" + dd1 + "/" + yyyy;
 
   function deleteItem(key) {
     const updateList = list.filter((item) => item.id !== key);
@@ -42,7 +44,7 @@ function ListModal() {
         style={styles.deleteButton}
         onPress={() => deleteItem(item.id)}
       >
-        <Ionicons name="close" size={24} color={COLORS.deleteButton} />
+        <Ionicons name="remove-circle-outline" size={30} color={COLORS.deleteButton} />
       </TouchableOpacity>
       <Text style={styles.hopeItemText}>{item.value}</Text>
     </View>
@@ -70,21 +72,23 @@ function ListModal() {
                 style={styles.closeButton}
                 onPress={handleClose}
               >
-                <Ionicons name="close" size={28} color={COLORS.primary} />
+                <Ionicons name="close" size={40} color={COLORS.primary} />
               </TouchableOpacity>
             </View>
 
             {/* Body */}
             <View style={styles.modalBody}>
               {totalHope === 0 && (
-                <View style={styles.instructionsContainer}>
+                <ScrollView
+                  showsVerticalScrollIndicator={true}
+                  persistentScrollbar={true}
+                >
                   <Text style={styles.modalTitle}>Happy {todayStr}! </Text>
-                <Text style={styles.instructions}>
-                    Add 3 items of hope to be able to copy and share. Your
-                    bucket resets each day at midnight. Each day is a new
-                    beginning!
+                  
+                  <Text style={styles.instructions}>
+                    Add 3 items of hope to fill up your HopeBucket!
                   </Text>
-                </View>
+                </ScrollView>
               )}
 
               <FlatList
@@ -92,7 +96,10 @@ function ListModal() {
                 renderItem={renderItem}
                 keyExtractor={(item) => String(item.id)}
                 style={styles.flatList}
-                contentContainerStyle={styles.flatListContent}
+                contentContainerStyle={[
+                  styles.flatListContent,
+                  totalHope === 0 && styles.flatListContentEmpty,
+                ]}
                 showsVerticalScrollIndicator={true}
                 persistentScrollbar={true}
               />
@@ -127,7 +134,6 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.modalRadius,
     borderWidth: 3,
     borderColor: COLORS.primary,
-    overflow: "hidden",
   },
   modalHeader: {
     flexDirection: "row",
@@ -142,9 +148,10 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.heading,
     fontSize: SIZES.subheadingFont,
     fontWeight: "bold",
+    textAlign: "center",
     color: COLORS.primary,
-    lineHeight: 22,
     paddingRight: 8,
+    marginBottom: SIZES.paddingMedium,
   },
   closeButton: {
     width: 40,
@@ -152,43 +159,48 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  modalBody: {
-    backgroundColor: COLORS.background,
-    minHeight: 300,
-    maxHeight: 500,
-    borderBottomLeftRadius: SIZES.modalRadius,
-    borderBottomRightRadius: SIZES.modalRadius,
-    padding: SIZES.paddingMedium,
-  },
-  instructionsContainer: {
-    alignItems: "center",
-    paddingVertical: SIZES.paddingLarge,
-    paddingHorizontal: SIZES.paddingLarge,
-  },
+ 
   instructions: {
     fontFamily: FONTS.body,
     fontSize: SIZES.subheadingFont,
     color: COLORS.primary,
     textAlign: "center",
-    lineHeight: 28,
+    lineHeight: 35,
   },
   lottieContainer: {
     flex: 1,
     width: "100%",
   },
+    modalBody: {
+    backgroundColor: COLORS.background,
+    minHeight: "90%",
+    border: COLORS.primary,
+    borderBottomLeftRadius: SIZES.modalRadius,
+    borderBottomRightRadius: SIZES.modalRadius,
+    padding: SIZES.paddingLarge,
+  },
   flatList: {
-    flex: 1,
+    flex:1,
+    minHeight:"80%",
   },
   flatListContent: {
     justifyContent: "flex-start",
+    paddingLeft: SIZES.paddingMedium,
     paddingBottom: SIZES.paddingLarge,
-
+    paddingTop: SIZES.paddingLarge,
+    borderRadius: SIZES.modalRadiusInside,
+    borderWidth:3,
+    borderColor: COLORS.primary,
+  },
+  flatListContentEmpty: {
+    borderWidth: 0,
   },
   listItem: {
     flexDirection: "row",
     alignItems: "flex-start",
     marginTop: 12,
     paddingVertical: 6,
+    width: "100%",
   },
   deleteButton: {
     paddingTop: 2,
@@ -202,6 +214,8 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     letterSpacing: 0.8,
     lineHeight: 30,
+    flexWrap: "wrap",
+    paddingRight: SIZES.paddingMedium,
   },
 });
 

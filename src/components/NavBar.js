@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect, useMemo } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  AppState,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
@@ -25,17 +26,29 @@ const SUGGESTIONS = [
   "Something that happened today that gives me hope is ",
 ];
 
+function getToday() {
+  const now = new Date();
+  return `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+}
+
+function getTomorrow() {
+  const now = new Date();
+  now.setDate(now.getDate() + 1); // handles month/year rollover
+  return `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+}
+
 function NavBar() {
   const [showAddField, setShowAddField] = useState(false);
   const [showNewList, setShowListLinks] = useState(false);
   const [input, setInput] = useState("");
-  const [currDate] = useState(new Date());
 
   const expContext = useContext(ExpContext);
   const expDate = expContext.expDate;
 
   const listContext = useContext(ListContext);
   const list = listContext.list;
+  const setList = listContext.setList; // stable ref (useCallback)
+  const listIsLoaded = listContext.isLoaded;
   const totalHope = list.length;
 
   const modalContext = useContext(ModalContext);
@@ -46,47 +59,53 @@ function NavBar() {
   const toggleListModal = () => setShowListModal(!showListModal);
   const inputRef = useRef(null);
 
-  const today = useMemo(() => {
-    const dd1 = currDate.getDate();
-    const mm = currDate.getMonth() + 1;
-    const yyyy = currDate.getFullYear();
-    return mm + "/" + dd1 + "/" + yyyy;
-  }, [currDate]);
-
-  const tomorrow = useMemo(() => {
-    const dd1 = currDate.getDate();
-    const mm = currDate.getMonth() + 1;
-    const yyyy = currDate.getFullYear();
-    const dd2 = dd1 + 1;
-    return mm + "/" + dd2 + "/" + yyyy;
-  }, [currDate]);
+  // Check for expiry when app returns from background
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "active" && getToday() === expDate) {
+        setShowListLinks(true);
+        setList([]);
+      }
+    });
+    return () => sub.remove();
+  }, [expDate, setList]);
 
   // Check for midnight reset
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (today === expDate) {
+      if (getToday() === expDate) {
         setShowListLinks(true);
-        listContext.setList([]);
+        setList([]);
       }
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [expDate, today, listContext]);
+  }, [expDate, setList]);
+
+  // Clear list immediately when data loads if the day has expired
+  useEffect(() => {
+    if (listIsLoaded && expContext.isLoaded) {
+      if (getToday() === expDate) {
+        setShowListLinks(true);
+        setList([]);
+      }
+    }
+  }, [listIsLoaded, expContext.isLoaded, expDate, setList]);
 
   const handleNewList = () => {
     if (totalHope < 3) {
       setShowListLinks(false);
-      expContext.setListDate(tomorrow);
-      listContext.setList([]);
+      expContext.setListDate(getTomorrow());
+      setList([]);
     }
   };
 
   useEffect(() => {
-    if (totalHope === 3 || expDate !== tomorrow) {
+    if (totalHope === 3 || expDate !== getTomorrow()) {
       setShowListLinks(true);
     } else {
       setShowListLinks(false);
     }
-  }, [totalHope, expDate, tomorrow]);
+  }, [totalHope, expDate]);
 
   const handleCopyClick = async () => {
     let copyText = "";
@@ -112,7 +131,7 @@ function NavBar() {
         id: Math.random(),
         value: input,
       };
-      listContext.setList((prevList) => [...prevList, newItem]);
+      setList((prevList) => [...prevList, newItem]);
       setInput("");
       setShowAddField(false);
     }
@@ -133,6 +152,7 @@ function NavBar() {
 
   const handleSuggestion = (suggestion) => {
     setInput(suggestion);
+    inputRef.current?.focus();
   };
 
   return (
@@ -160,6 +180,7 @@ function NavBar() {
             </Text>
             <ScrollView
               horizontal
+              keyboardShouldPersistTaps="handled"
               showsHorizontalScrollIndicator={false}
               style={styles.suggestionsScroll}
               contentContainerStyle={styles.suggestionsContainer}

@@ -15,7 +15,7 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  logo: 'DeliciousHandrawn_400Regular',
+  logo: 'Sriracha_400Regular',
   heading: 'Cabin_700Bold',
   body: 'Cabin_400Regular',
   hopeItem: 'Cabin_700Bold',
@@ -25,13 +25,14 @@ export const FONTS = {
 export const SIZES = {
   logoFont: 55,
   headingFont: 30,
-  subheadingFont: 24,
+  subheadingFont: 28,
   bodyFont: 20,
   hopeItemFont: 20,
-  hopeCountFont: 30,
+  hopeCountFont: 35,
   iconFont: 30,
   navButtonRadius: 10,
   modalRadius: 15,
+  modalRadiusInside: 10,
   paddingSmall: 8,
   paddingMedium: 16,
   paddingLarge: 24,

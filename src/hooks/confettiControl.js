@@ -9,14 +9,14 @@ const LottieControlConfetti = () => {
   const totalHope = list.length;
 
   useEffect(() => {
-    if (!lottieRef.current) return;
+    if (!lottieRef.current || totalHope !== 3) return;
 
-    if (totalHope === 3) {
-      lottieRef.current.play();
-    } else {
-      lottieRef.current.reset();
-    }
-  }, [totalHope, list]);
+    lottieRef.current.play();
+  }, [totalHope]);
+
+  if (totalHope !== 3) {
+    return null;
+  }
 
   return (
     <LottieView
@@ -26,11 +26,11 @@ const LottieControlConfetti = () => {
       loop={false}
       style={{
         position: "absolute",
-        zIndex: -1,
         left: 0,
         top: 0,
         height: "100%",
         width: "100%",
+        pointerEvents: "none",
       }}
     />
   );
