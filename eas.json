@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 16.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "sarahkimirettig@gmail.com",
+        "ascAppId": "6758913831"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./google-service-account-key.json"
+      }
+    }
+  }
+}
