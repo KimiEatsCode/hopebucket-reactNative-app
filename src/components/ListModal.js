@@ -6,18 +6,16 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
-  ScrollView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { ListContext } from "../contexts/ListContext";
 import { ModalContext } from "../contexts/ModalContext";
-import LottieControlNavMsg from "../hooks/navMsgControl";
-import { COLORS, FONTS, SIZES, BORDERS } from "../styles/theme";
+import { COLORS, FONTS, SIZES } from "../styles/theme";
 
 function ListModal() {
   const listContext = useContext(ListContext);
-  const list = listContext.list;
+  const list = listContext.list ?? [];
   const totalHope = list.length;
 
   const modalContext = useContext(ModalContext);
@@ -34,8 +32,9 @@ function ListModal() {
   const todayStr = dayOfWeek + " " + mm + "/" + dd1 + "/" + yyyy;
 
   function deleteItem(key) {
-    const updateList = list.filter((item) => item.id !== key);
-    listContext.setList(updateList);
+    listContext.setList((prevList) =>
+      prevList.filter((item) => item.id !== key)
+    );
   }
 
   const renderItem = ({ item }) => (
@@ -78,36 +77,23 @@ function ListModal() {
 
             {/* Body */}
             <View style={styles.modalBody}>
-              {totalHope === 0 && (
-                <ScrollView
-                  showsVerticalScrollIndicator={true}
-                  persistentScrollbar={true}
-                >
-                  <Text style={styles.modalTitle}>Happy {todayStr}! </Text>
-                  
+              {totalHope === 0 ? (
+                <View style={styles.emptyStateContainer}>
+                  <Text style={styles.emptyStateTitle}>Happy {todayStr}!</Text>
                   <Text style={styles.instructions}>
                     Add 3 items of hope to fill up your HopeBucket!
                   </Text>
-                </ScrollView>
-              )}
-
-              <FlatList
-                data={[...list].reverse()}
-                renderItem={renderItem}
-                keyExtractor={(item) => String(item.id)}
-                style={styles.flatList}
-                contentContainerStyle={[
-                  styles.flatListContent,
-                  totalHope === 0 && styles.flatListContentEmpty,
-                ]}
-                showsVerticalScrollIndicator={true}
-                persistentScrollbar={true}
-              />
-
-              {totalHope < 3 && (
-                <View style={styles.lottieContainer}>
-                  <LottieControlNavMsg />
                 </View>
+              ) : (
+                <FlatList
+                  data={[...list].reverse()}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => String(item.id)}
+                  style={styles.flatList}
+                  contentContainerStyle={styles.flatListContent}
+                  showsVerticalScrollIndicator={true}
+                  persistentScrollbar={true}
+                />
               )}
             </View>
           </View>
@@ -128,6 +114,11 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: "100%",
     maxHeight: "85%",
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 10,
   },
   modalContent: {
     backgroundColor: COLORS.white,
@@ -151,7 +142,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: COLORS.primary,
     paddingRight: 8,
-    marginBottom: SIZES.paddingMedium,
+
   },
   closeButton: {
     width: 40,
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
- 
+
   instructions: {
     fontFamily: FONTS.body,
     fontSize: SIZES.subheadingFont,
@@ -167,42 +158,57 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 35,
   },
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: SIZES.paddingMedium,
+  },
+  emptyStateTitle: {
+    fontFamily: FONTS.heading,
+    fontSize: SIZES.subheadingFont,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: COLORS.primary,
+    marginBottom: SIZES.paddingMedium,
+  },
   lottieContainer: {
     flex: 1,
     width: "100%",
   },
     modalBody: {
     backgroundColor: COLORS.background,
-    minHeight: "90%",
+    minHeight: "80%",
     border: COLORS.primary,
     borderBottomLeftRadius: SIZES.modalRadius,
     borderBottomRightRadius: SIZES.modalRadius,
     padding: SIZES.paddingLarge,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.85,
+    shadowRadius: 10,
+    elevation: 12,
   },
   flatList: {
     flex:1,
-    minHeight:"80%",
+    minHeight:"100%",
+    borderBottomWidth: 2,
+    borderBottomColor: COLORS.primary,
   },
   flatListContent: {
     justifyContent: "flex-start",
     paddingLeft: SIZES.paddingMedium,
-    paddingBottom: SIZES.paddingLarge,
-    paddingTop: SIZES.paddingLarge,
-    borderRadius: SIZES.modalRadiusInside,
-    borderWidth:3,
-    borderColor: COLORS.primary,
-  },
-  flatListContentEmpty: {
-    borderWidth: 0,
+    paddingBottom: SIZES.paddingMedium,
+    paddingTop: SIZES.paddingMedium,
   },
   listItem: {
     flexDirection: "row",
     alignItems: "flex-start",
     marginTop: 12,
-    paddingVertical: 6,
+    paddingVertical: 10,
     width: "100%",
   },
   deleteButton: {
+    fontSize: SIZES.iconFont,
     paddingTop: 2,
     paddingRight: 8,
   },

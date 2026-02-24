@@ -15,7 +15,7 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  logo: 'Sriracha_400Regular',
+  logo: 'DeliciousHandrawn_400Regular',
   heading: 'Cabin_700Bold',
   body: 'Cabin_400Regular',
   hopeItem: 'Cabin_700Bold',

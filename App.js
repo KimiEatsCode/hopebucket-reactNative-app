@@ -3,12 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
   ActivityIndicator,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
-import { Sriracha_400Regular } from "@expo-google-fonts/sriracha";
+import { DeliciousHandrawn_400Regular } from "@expo-google-fonts/delicious-handrawn";
 import { Cabin_400Regular, Cabin_700Bold } from "@expo-google-fonts/cabin";
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 
@@ -26,7 +26,7 @@ import { COLORS, FONTS, SIZES } from "./src/styles/theme";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    Sriracha_400Regular,
+    DeliciousHandrawn_400Regular,
     Cabin_400Regular,
     Cabin_700Bold,
     Roboto_400Regular,
@@ -80,14 +80,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingTop: 10,
+    paddingTop: 20,
   },
   logoName: {
     fontFamily: FONTS.logo,
     fontSize: SIZES.logoFont,
     textAlign: "center",
     color: COLORS.primary,
-    marginTop: 10,
-    marginBottom: 16,
+    marginTop: 15,
+    marginBottom: 10,
   },
 });

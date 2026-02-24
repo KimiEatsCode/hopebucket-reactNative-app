@@ -19,12 +19,12 @@ import { ModalContext } from "../contexts/ModalContext";
 import { COLORS, FONTS, SIZES } from "../styles/theme";
 
 const SUGGESTIONS = [
-  "Even though I am sad, mad something I can do to get through the day is ",
   "I am grateful for ",
-  "A person, thing, event, or animal that gives me hope is ",
   "An action I took that gives me hope is ",
   "Something I can look forward to is ",
   "Something that happened today that gives me hope is ",
+  "Something I can do to get through the day is ",
+  "A person, thing or animal that gives me hope is ",
 ];
 
 function getToday() {
@@ -117,6 +117,7 @@ function NavBar() {
     try {
       await Clipboard.setStringAsync(copyText);
       setCopyMessage("HopeBucket Copied!");
+     
     } catch (err) {
       console.error("Error copying text to clipboard:", err);
     }

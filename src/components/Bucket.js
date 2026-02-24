@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from "react-native";
 import { ListContext } from "../contexts/ListContext";
 import { ModalContext } from "../contexts/ModalContext";
@@ -7,20 +7,32 @@ import LottieControlBucket from "../hooks/bucketControl";
 import { COLORS, FONTS, SIZES } from "../styles/theme";
 
 function Bucket() {
-  const listContext = useContext(ListContext);
-  const totalHope = listContext.list.length;
+  const { list = [] } = useContext(ListContext);
+  const totalHope = list.length;
 
   const modalContext = useContext(ModalContext);
   const setShowListModal = modalContext.setShowListModal;
   const showListModal = modalContext.showListModal;
   const copyMessage = modalContext.copyMessage;
+  const setCopyMessage = modalContext.setCopyMessage;
 
   const toggleListModal = () => setShowListModal(!showListModal);
 
+  useEffect(() => {
+    if (totalHope < 3 && copyMessage) {
+      setCopyMessage("");
+    }
+  }, [totalHope, copyMessage, setCopyMessage]);
+
   const getMessage = () => {
-    if (copyMessage && totalHope === 3) return copyMessage;
-    if (totalHope === 3) return "Congrats! You filled your HopeBucket!";
-    if (totalHope < 3) return "Add hope to fill up your HopeBucket!";
+    if (totalHope < 3) {
+      return "Add hope to fill up your HopeBucket!";
+    }
+
+    if (totalHope === 3) {
+      return copyMessage ? copyMessage : "Congrats! You filled your HopeBucket!";
+    }
+
     return "";
   };
 
@@ -29,7 +41,7 @@ function Bucket() {
       <LottieControlConfetti />
       <View style={styles.messageRow}>
         <Text style={styles.topMessage}>{getMessage()}</Text>
-        {copyMessage ? (
+        {copyMessage && totalHope === 0 ? (
           <Text style={styles.subMessage}>
             Find a background on{" "}
             <Text
@@ -85,7 +97,7 @@ const styles = StyleSheet.create({
   },
   bucketIcon: {
     flex: 1,
-    alignItems: "center",
+    alignItems:"center",
     justifyContent: "center",
     width: "100%",
     
