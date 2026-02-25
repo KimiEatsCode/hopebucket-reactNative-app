@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingLeft: SIZES.paddingMedium,
     paddingBottom: SIZES.paddingMedium,
-    paddingTop: SIZES.paddingMedium,
   },
   listItem: {
     flexDirection: "row",

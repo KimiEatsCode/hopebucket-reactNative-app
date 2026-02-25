@@ -41,7 +41,7 @@ function Bucket() {
       <LottieControlConfetti />
       <View style={styles.messageRow}>
         <Text style={styles.topMessage}>{getMessage()}</Text>
-        {copyMessage && totalHope === 0 ? (
+        {copyMessage && totalHope === 3 ? (
           <Text style={styles.subMessage}>
             Find a background on{" "}
             <Text
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: "center",
     position: "relative",
-    top: 10,
     width: 198,
     zIndex: 10,
   },

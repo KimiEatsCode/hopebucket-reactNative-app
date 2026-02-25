@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
-import { DeliciousHandrawn_400Regular } from "@expo-google-fonts/delicious-handrawn";
 import { Cabin_400Regular, Cabin_700Bold } from "@expo-google-fonts/cabin";
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 
@@ -26,7 +25,7 @@ import { COLORS, FONTS, SIZES } from "./src/styles/theme";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    DeliciousHandrawn_400Regular,
+    BagelFatOneRegular: require("./src/fonts/BagelFatOne-Regular.ttf"),
     Cabin_400Regular,
     Cabin_700Bold,
     Roboto_400Regular,
@@ -84,10 +83,11 @@ const styles = StyleSheet.create({
   },
   logoName: {
     fontFamily: FONTS.logo,
+    fontWeight: "700",
     fontSize: SIZES.logoFont,
     textAlign: "center",
     color: COLORS.primary,
-    marginTop: 15,
-    marginBottom: 10,
+    paddingTop: 25,
+
   },
 });

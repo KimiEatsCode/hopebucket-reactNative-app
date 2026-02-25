@@ -15,7 +15,7 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  logo: 'DeliciousHandrawn_400Regular',
+  logo: 'BagelFatOneRegular',
   heading: 'Cabin_700Bold',
   body: 'Cabin_400Regular',
   hopeItem: 'Cabin_700Bold',
