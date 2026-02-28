@@ -26,7 +26,7 @@ export const SIZES = {
   logoFont: 55,
   headingFont: 30,
   subheadingFont: 28,
-  bodyFont: 20,
+  bodyFont: 18,
   hopeItemFont: 20,
   hopeCountFont: 35,
   iconFont: 30,

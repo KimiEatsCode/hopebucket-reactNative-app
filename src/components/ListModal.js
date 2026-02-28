@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   },
   flatListContent: {
     justifyContent: "flex-start",
-    paddingLeft: SIZES.paddingMedium,
+
     paddingBottom: SIZES.paddingMedium,
   },
   listItem: {
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   hopeItemText: {
     flex: 1,
     fontFamily: FONTS.hopeItem,
-    fontWeight: "900",
+    fontWeight: "700",
     fontSize: SIZES.hopeItemFont,
     color: COLORS.primary,
     letterSpacing: 0.8,

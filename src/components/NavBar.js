@@ -16,6 +16,7 @@ import * as Clipboard from "expo-clipboard";
 import { ListContext } from "../contexts/ListContext";
 import { ExpContext } from "../contexts/ExpContext";
 import { ModalContext } from "../contexts/ModalContext";
+import QuoteModal from "./QuoteModal";
 import { COLORS, FONTS, SIZES } from "../styles/theme";
 
 const SUGGESTIONS = [
@@ -41,6 +42,7 @@ function getTomorrow() {
 function NavBar() {
   const [showAddField, setShowAddField] = useState(false);
   const [showNewList, setShowListLinks] = useState(false);
+  const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [input, setInput] = useState("");
 
   const expContext = useContext(ExpContext);
@@ -220,11 +222,12 @@ function NavBar() {
                 size={32}
                 color={COLORS.white}
               />
-              <Text style={styles.confirmButtonText}>Add Hope</Text>
+              <Text style={styles.confirmButtonText}>Add</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </Modal>
+      <QuoteModal visible={showQuoteModal} onClose={() => setShowQuoteModal(false)} />
 
       {/* Bottom Navigation Bar */}
       <View style={styles.navBar}>
@@ -240,7 +243,7 @@ function NavBar() {
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>View List</Text>
+                <Text style={styles.navButtonText}>View</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -266,25 +269,25 @@ function NavBar() {
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>Copy List</Text>
+                <Text style={styles.navButtonText}>Copy</Text>
               </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={[styles.navButton, styles.disabledButton]}
-                disabled
-              >
-                <Ionicons
-                  name="add-circle"
-                  size={SIZES.iconFont}
-                  color={COLORS.white}
-                />
-              </TouchableOpacity>
-            )}
+            ) : null}
+            <TouchableOpacity
+              style={[styles.navButton, styles.flexGrow1]}
+              onPress={() => setShowQuoteModal(true)}
+            >
+              <Ionicons
+                name="chatbubble-ellipses"
+                size={SIZES.iconFont}
+                color={COLORS.white}
+              />
+              <Text style={styles.navButtonText}>Quotes</Text>
+            </TouchableOpacity>
           </>
         ) : (
           <>
             <TouchableOpacity
-              style={[styles.navButton, styles.flexGrow2]}
+              style={[styles.navButton, styles.flexGrow1]}
               onPress={toggleListModal}
             >
               <Ionicons
@@ -298,7 +301,7 @@ function NavBar() {
             <TouchableOpacity
               style={[
                 styles.navButton,
-                styles.flexGrow2,
+                styles.flexGrow1,
                 totalHope >= 3 && styles.disabledButton,
               ]}
               onPress={handleOpen}
@@ -310,6 +313,17 @@ function NavBar() {
                 color={COLORS.white}
               />
               <Text style={styles.navButtonText}>Add</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.navButton, styles.flexGrow1]}
+              onPress={() => setShowQuoteModal(true)}
+            >
+              <Ionicons
+                name="chatbubble-ellipses"
+                size={SIZES.iconFont}
+                color={COLORS.white}
+              />
+              <Text style={styles.navButtonText}>Quotes</Text>
             </TouchableOpacity>
           </>
         )}
@@ -411,11 +425,8 @@ const styles = StyleSheet.create({
   navButtonText: {
     color: COLORS.white,
     fontFamily: FONTS.body,
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  newListButton: {
-    // Same as navButton, could add shake animation later
+    fontSize: 19,
+    fontWeight: "bold",
   },
   disabledButton: {
     opacity: 0.5,
