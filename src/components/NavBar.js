@@ -30,13 +30,28 @@ const SUGGESTIONS = [
 
 function getToday() {
   const now = new Date();
-  return `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return `${localMidnight.getMonth() + 1}/${localMidnight.getDate()}/${localMidnight.getFullYear()}`;
 }
 
 function getTomorrow() {
   const now = new Date();
-  now.setDate(now.getDate() + 1); // handles month/year rollover
-  return `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  return `${tomorrow.getMonth() + 1}/${tomorrow.getDate()}/${tomorrow.getFullYear()}`;
+}
+
+function parseDateString(dateStr) {
+  if (!dateStr) return null;
+  const [month, day, year] = dateStr.split("/").map(Number);
+  if ([month, day, year].some(Number.isNaN)) return null;
+  return new Date(year, month - 1, day);
+}
+
+function isExpired(expirationDateStr) {
+  const today = parseDateString(getToday());
+  const expDate = parseDateString(expirationDateStr);
+  if (!today || !expDate) return false;
+  return today >= expDate;
 }
 
 function NavBar() {
@@ -65,7 +80,7 @@ function NavBar() {
   // Check for expiry when app returns from background
   useEffect(() => {
     const sub = AppState.addEventListener("change", (state) => {
-      if (state === "active" && getToday() === expDate) {
+      if (state === "active" && isExpired(expDate)) {
         setShowListLinks(true);
         setList([]);
       }
@@ -76,18 +91,18 @@ function NavBar() {
   // Check for midnight reset
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (getToday() === expDate) {
+      if (isExpired(expDate)) {
         setShowListLinks(true);
         setList([]);
       }
-    }, 1000);
+    }, 60000);
     return () => clearInterval(intervalId);
   }, [expDate, setList]);
 
   // Clear list immediately when data loads if the day has expired
   useEffect(() => {
     if (listIsLoaded && expContext.isLoaded) {
-      if (getToday() === expDate) {
+      if (isExpired(expDate)) {
         setShowListLinks(true);
         setList([]);
       }
@@ -103,11 +118,9 @@ function NavBar() {
   };
 
   useEffect(() => {
-    if (totalHope === 3 || expDate !== getTomorrow()) {
-      setShowListLinks(true);
-    } else {
-      setShowListLinks(false);
-    }
+    const shouldShowNewList =
+      totalHope === 3 || !expDate || isExpired(expDate) || expDate !== getTomorrow();
+    setShowListLinks(shouldShowNewList);
   }, [totalHope, expDate]);
 
   const handleCopyClick = async () => {
