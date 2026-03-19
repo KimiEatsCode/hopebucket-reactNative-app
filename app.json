@@ -2,7 +2,7 @@
   "expo": {
     "name": "HopeBuicket",
     "slug": "hopebucket-react-native",
-    "version": "2.2.3",
+    "version": "2.2.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,6 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hopebucket.app",
+      "buildNumber": "6",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
