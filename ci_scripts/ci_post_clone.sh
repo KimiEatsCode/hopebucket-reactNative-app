@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+# Xcode Cloud runs on Apple Silicon — Homebrew (and pod/node) live under /opt/homebrew
+export PATH="/opt/homebrew/bin:$PATH"
+
+echo "--- Node version: $(node --version)"
+echo "--- npm version: $(npm --version)"
+echo "--- pod version: $(pod --version)"
+
 # Install Node dependencies (required by React Native native modules at build time)
 cd $CI_PRIMARY_REPOSITORY_PATH
 npm install
