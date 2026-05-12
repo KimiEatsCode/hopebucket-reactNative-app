@@ -55,7 +55,6 @@ function isExpired(expirationDateStr) {
 }
 
 function NavBar() {
-  const [showAddField, setShowAddField] = useState(false);
   const [showNewList, setShowListLinks] = useState(false);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [input, setInput] = useState("");
@@ -72,6 +71,8 @@ function NavBar() {
   const modalContext = useContext(ModalContext);
   const showListModal = modalContext.showListModal;
   const setShowListModal = modalContext.setShowListModal;
+  const showAddField = modalContext.showAddField;
+  const setShowAddField = modalContext.setShowAddField;
   const setCopyMessage = modalContext.setCopyMessage;
 
   const toggleListModal = () => setShowListModal(!showListModal);

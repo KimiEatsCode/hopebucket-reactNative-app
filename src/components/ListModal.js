@@ -21,8 +21,14 @@ function ListModal() {
   const modalContext = useContext(ModalContext);
   const showListModal = modalContext.showListModal;
   const setShowListModal = modalContext.setShowListModal;
+  const setShowAddField = modalContext.setShowAddField;
 
   const handleClose = () => setShowListModal(false);
+
+  const handleAddHope = () => {
+    setShowListModal(false);
+    setShowAddField(true);
+  };
 
   const today = new Date();
   const dd1 = today.getDate();
@@ -50,9 +56,9 @@ function ListModal() {
   );
 
   const headerText =
-    totalHope < 3
-      ? `${totalHope} of 3 Completed`
-      : `${totalHope} of 3 Completed`;
+    totalHope >= 3
+      ? `Congrats! ${totalHope} of 3 Completed.`
+      : `${dayOfWeek}, ${mm}/${dd1}/${yyyy} — ${totalHope} of 3`;
 
   return (
     <Modal
@@ -96,6 +102,19 @@ function ListModal() {
                 />
               )}
             </View>
+
+            {/* Footer */}
+            {totalHope < 3 && (
+              <View style={styles.modalFooter}>
+                <TouchableOpacity
+                  style={styles.addHopeButton}
+                  onPress={handleAddHope}
+                >
+                  <Ionicons name="add-circle" size={22} color={COLORS.white} />
+                  <Text style={styles.addHopeButtonText}>Add Hope</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </SafeAreaView>
       </View>
@@ -221,6 +240,28 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     flexWrap: "wrap",
     paddingRight: SIZES.paddingMedium,
+  },
+  modalFooter: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    padding: SIZES.paddingMedium,
+    borderTopWidth: 2,
+    borderTopColor: COLORS.primary,
+  },
+  addHopeButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.primary,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: SIZES.navButtonRadius,
+    gap: 6,
+  },
+  addHopeButtonText: {
+    color: COLORS.white,
+    fontFamily: FONTS.body,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

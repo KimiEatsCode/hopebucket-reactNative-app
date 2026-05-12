@@ -137,3 +137,4 @@ dist
 .expo/
 google-service-account-key.json
 publishing-plan.txt
+/docs
