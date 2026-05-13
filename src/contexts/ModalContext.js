@@ -5,7 +5,7 @@ export const ModalContext = createContext();
 export const ModalContextProvider = (props) => {
   const [showListModal, setShowListModal] = useState(false);
   const [showAddField, setShowAddField] = useState(false);
-  const [copyMessage, setCopyMessage] = useState("");
+  const [triggerScreenshot, setTriggerScreenshot] = useState(false);
 
   return (
     <ModalContext.Provider
@@ -14,8 +14,8 @@ export const ModalContextProvider = (props) => {
         setShowListModal,
         showAddField,
         setShowAddField,
-        copyMessage,
-        setCopyMessage,
+        triggerScreenshot,
+        setTriggerScreenshot,
       }}
     >
       {props.children}

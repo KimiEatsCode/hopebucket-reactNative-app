@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,12 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import ViewShot from "react-native-view-shot";
+import * as Sharing from "expo-sharing";
 import { ListContext } from "../contexts/ListContext";
 import { ModalContext } from "../contexts/ModalContext";
 import { COLORS, FONTS, SIZES } from "../styles/theme";
@@ -22,8 +25,43 @@ function ListModal() {
   const showListModal = modalContext.showListModal;
   const setShowListModal = modalContext.setShowListModal;
   const setShowAddField = modalContext.setShowAddField;
+  const triggerScreenshot = modalContext.triggerScreenshot;
+  const setTriggerScreenshot = modalContext.setTriggerScreenshot;
+
+  const viewShotRef = useRef(null);
+  const [isCapturing, setIsCapturing] = useState(false);
 
   const handleClose = () => setShowListModal(false);
+
+  // When NavBar fires triggerScreenshot, open the modal then capture
+  useEffect(() => {
+    if (!triggerScreenshot) return;
+    setTriggerScreenshot(false);
+    setShowListModal(true);
+    setTimeout(() => setIsCapturing(true), 100);
+  }, [triggerScreenshot, setTriggerScreenshot, setShowListModal]);
+
+  useEffect(() => {
+    if (!isCapturing || !viewShotRef.current) return;
+    viewShotRef.current
+      .capture()
+      .then(async (uri) => {
+        setIsCapturing(false);
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+          await Sharing.shareAsync(uri, { mimeType: "image/png" });
+        } else {
+          Alert.alert("Screenshot saved", "Your screenshot has been captured.");
+        }
+      })
+      .catch((err) => {
+        setIsCapturing(false);
+        console.error("Screenshot error:", err);
+        Alert.alert("Error", "Could not capture screenshot.");
+      });
+  }, [isCapturing]);
+
+  const handleScreenshot = () => setIsCapturing(true);
 
   const handleAddHope = () => {
     setShowListModal(false);
@@ -82,30 +120,32 @@ function ListModal() {
             </View>
 
             {/* Body */}
-            <View style={styles.modalBody}>
-              {totalHope === 0 ? (
-                <View style={styles.emptyStateContainer}>
-                  <Text style={styles.emptyStateTitle}>Happy {todayStr}!</Text>
-                  <Text style={styles.instructions}>
-                    Add 3 items of hope to fill up your HopeBucket!
-                  </Text>
-                </View>
-              ) : (
-                <FlatList
-                  data={[...list].reverse()}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => String(item.id)}
-                  style={styles.flatList}
-                  contentContainerStyle={styles.flatListContent}
-                  showsVerticalScrollIndicator={true}
-                  persistentScrollbar={true}
-                />
-              )}
-            </View>
+            <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
+              <View style={styles.modalBody}>
+                {totalHope === 0 ? (
+                  <View style={styles.emptyStateContainer}>
+                    <Text style={styles.emptyStateTitle}>Happy {todayStr}!</Text>
+                    <Text style={styles.instructions}>
+                      Add 3 items of hope to fill up your HopeBucket!
+                    </Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={[...list].reverse()}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => String(item.id)}
+                    style={styles.flatList}
+                    contentContainerStyle={styles.flatListContent}
+                    showsVerticalScrollIndicator={true}
+                    persistentScrollbar={true}
+                  />
+                )}
+              </View>
+            </ViewShot>
 
             {/* Footer */}
-            {totalHope < 3 && (
-              <View style={styles.modalFooter}>
+            <View style={styles.modalFooter}>
+              {totalHope < 3 ? (
                 <TouchableOpacity
                   style={styles.addHopeButton}
                   onPress={handleAddHope}
@@ -113,8 +153,19 @@ function ListModal() {
                   <Ionicons name="add-circle" size={22} color={COLORS.white} />
                   <Text style={styles.addHopeButtonText}>Add Hope</Text>
                 </TouchableOpacity>
-              </View>
-            )}
+              ) : (
+                <TouchableOpacity
+                  style={styles.addHopeButton}
+                  onPress={handleScreenshot}
+                  disabled={isCapturing}
+                >
+                  <Ionicons name="camera" size={22} color={COLORS.white} />
+                  <Text style={styles.addHopeButtonText}>
+                    {isCapturing ? "Capturing…" : "Screenshot"}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </SafeAreaView>
       </View>

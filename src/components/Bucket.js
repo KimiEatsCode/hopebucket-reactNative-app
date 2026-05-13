@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Linking,
   Modal,
   Pressable,
   Animated,
@@ -33,8 +32,6 @@ function Bucket() {
   const modalContext = useContext(ModalContext);
   const setShowListModal = modalContext.setShowListModal;
   const showListModal = modalContext.showListModal;
-  const copyMessage = modalContext.copyMessage;
-  const setCopyMessage = modalContext.setCopyMessage;
 
   const toggleListModal = () => setShowListModal(!showListModal);
   const handleCopyQuote = async () => {
@@ -50,12 +47,6 @@ function Bucket() {
       Alert.alert("Copy failed", "Couldn't copy quote right now. Please try again.");
     }
   };
-
-  useEffect(() => {
-    if (totalHope < 3 && copyMessage) {
-      setCopyMessage("");
-    }
-  }, [totalHope, copyMessage, setCopyMessage]);
 
   useEffect(() => {
     const animations = floatValues.map((value, index) =>
@@ -83,11 +74,9 @@ function Bucket() {
     if (totalHope < 3) {
       return "Add hope to fill up your HopeBucket!";
     }
-
     if (totalHope === 3) {
-      return copyMessage ? copyMessage : "Congrats! You filled your HopeBucket!";
+      return "Congrats! You filled your HopeBucket!";
     }
-
     return "";
   };
 
@@ -96,17 +85,6 @@ function Bucket() {
       <LottieControlConfetti />
       <View style={styles.messageRow}>
         <Text style={styles.topMessage}>{getMessage()}</Text>
-        {copyMessage && totalHope === 3 ? (
-          <Text style={styles.subMessage}>
-            Find a background on{" "}
-            <Text
-              style={styles.link}
-              onPress={() => Linking.openURL("https://pixabay.com")}
-            >
-              Pixabay
-            </Text>
-          </Text>
-        ) : null}
       </View>
       <View style={styles.bucketIcon}>
         <TouchableOpacity

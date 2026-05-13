@@ -12,7 +12,6 @@ import {
   AppState,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import * as Clipboard from "expo-clipboard";
 import { ListContext } from "../contexts/ListContext";
 import { ExpContext } from "../contexts/ExpContext";
 import { ModalContext } from "../contexts/ModalContext";
@@ -73,7 +72,7 @@ function NavBar() {
   const setShowListModal = modalContext.setShowListModal;
   const showAddField = modalContext.showAddField;
   const setShowAddField = modalContext.setShowAddField;
-  const setCopyMessage = modalContext.setCopyMessage;
+  const setTriggerScreenshot = modalContext.setTriggerScreenshot;
 
   const toggleListModal = () => setShowListModal(!showListModal);
   const inputRef = useRef(null);
@@ -123,21 +122,6 @@ function NavBar() {
       totalHope === 3 || !expDate || isExpired(expDate) || expDate !== getTomorrow();
     setShowListLinks(shouldShowNewList);
   }, [totalHope, expDate]);
-
-  const handleCopyClick = async () => {
-    let copyText = "";
-    list.forEach((item) => {
-      copyText += `${item.value}\n\n`;
-    });
-
-    try {
-      await Clipboard.setStringAsync(copyText);
-      setCopyMessage("HopeBucket Copied!");
-     
-    } catch (err) {
-      console.error("Error copying text to clipboard:", err);
-    }
-  };
 
   function addItem() {
     if (list.length >= 3) {
@@ -276,14 +260,14 @@ function NavBar() {
             {totalHope >= 3 ? (
               <TouchableOpacity
                 style={[styles.navButton, styles.flexGrow1]}
-                onPress={handleCopyClick}
+                onPress={() => setTriggerScreenshot(true)}
               >
                 <Ionicons
-                  name="copy-outline"
+                  name="camera-outline"
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>Copy</Text>
+                <Text style={styles.navButtonText}>Screenshot</Text>
               </TouchableOpacity>
             ) : null}
             <TouchableOpacity
