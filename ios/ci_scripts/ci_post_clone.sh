@@ -1,15 +1,22 @@
 #!/bin/sh
 set -e
 
-# Xcode Cloud runs on Apple Silicon — Homebrew (and pod/node) live under /opt/homebrew
-export PATH="/opt/homebrew/bin:$PATH"
+# Add all common tool locations for Xcode Cloud (Apple Silicon + Intel Homebrew, nvm, system)
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
-echo "--- Node version: $(node --version)"
-echo "--- npm version: $(npm --version)"
-echo "--- pod version: $(pod --version)"
+# Node may be managed by nvm — source it if present
+if [ -f "$HOME/.nvm/nvm.sh" ]; then
+  . "$HOME/.nvm/nvm.sh"
+fi
+
+echo "--- PATH: $PATH"
+echo "--- node: $(which node || echo 'NOT FOUND')"
+echo "--- npm:  $(which npm  || echo 'NOT FOUND')"
+echo "--- pod:  $(which pod  || echo 'NOT FOUND')"
+echo "--- Node version: $(node --version 2>/dev/null || echo 'N/A')"
+echo "--- pod version:  $(pod  --version 2>/dev/null || echo 'N/A')"
 
 # Install Node dependencies (required by React Native native modules at build time)
-# ci_scripts lives inside ios/, so repo root is one level up
 cd $CI_PRIMARY_REPOSITORY_PATH
 npm install
 
