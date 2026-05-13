@@ -9,6 +9,7 @@ echo "--- npm version: $(npm --version)"
 echo "--- pod version: $(pod --version)"
 
 # Install Node dependencies (required by React Native native modules at build time)
+# ci_scripts lives inside ios/, so repo root is one level up
 cd $CI_PRIMARY_REPOSITORY_PATH
 npm install
 
