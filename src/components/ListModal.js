@@ -99,28 +99,46 @@ function ListModal() {
       : `${dayOfWeek}, ${mm}/${dd1}/${yyyy} — ${totalHope} of 3`;
 
   return (
-    <Modal
-      visible={showListModal}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={handleClose}
-    >
-      <View style={styles.backdrop}>
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            {/* Header */}
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{headerText}</Text>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={handleClose}
-              >
-                <Ionicons name="close" size={40} color={COLORS.primary} />
-              </TouchableOpacity>
+    <>
+      {/* Off-screen full-list capture target — never visible, always renders all items */}
+      <ViewShot
+        ref={viewShotRef}
+        options={{ format: "png", quality: 1 }}
+        style={styles.offscreenCapture}
+      >
+        <View style={styles.screenshotCard}>
+          <Text style={styles.screenshotTitle}>HopeBucket</Text>
+          <Text style={styles.screenshotDate}>{todayStr}</Text>
+          {[...list].reverse().map((item) => (
+            <View key={String(item.id)} style={styles.screenshotItem}>
+              <Text style={styles.screenshotBullet}>{"\u2022"}</Text>
+              <Text style={styles.screenshotItemText}>{item.value}</Text>
             </View>
+          ))}
+        </View>
+      </ViewShot>
 
-            {/* Body */}
-            <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
+      <Modal
+        visible={showListModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={handleClose}
+      >
+        <View style={styles.backdrop}>
+          <SafeAreaView style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              {/* Header */}
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>{headerText}</Text>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={handleClose}
+                >
+                  <Ionicons name="close" size={40} color={COLORS.primary} />
+                </TouchableOpacity>
+              </View>
+
+              {/* Body */}
               <View style={styles.modalBody}>
                 {totalHope === 0 ? (
                   <View style={styles.emptyStateContainer}>
@@ -141,35 +159,35 @@ function ListModal() {
                   />
                 )}
               </View>
-            </ViewShot>
 
-            {/* Footer */}
-            <View style={styles.modalFooter}>
-              {totalHope < 3 ? (
-                <TouchableOpacity
-                  style={styles.addHopeButton}
-                  onPress={handleAddHope}
-                >
-                  <Ionicons name="add-circle" size={22} color={COLORS.white} />
-                  <Text style={styles.addHopeButtonText}>Add Hope</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={styles.addHopeButton}
-                  onPress={handleScreenshot}
-                  disabled={isCapturing}
-                >
-                  <Ionicons name="camera" size={22} color={COLORS.white} />
-                  <Text style={styles.addHopeButtonText}>
-                    {isCapturing ? "Capturing…" : "Screenshot"}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              {/* Footer */}
+              <View style={styles.modalFooter}>
+                {totalHope < 3 ? (
+                  <TouchableOpacity
+                    style={styles.addHopeButton}
+                    onPress={handleAddHope}
+                  >
+                    <Ionicons name="add-circle" size={22} color={COLORS.white} />
+                    <Text style={styles.addHopeButtonText}>Add Hope</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.addHopeButton}
+                    onPress={handleScreenshot}
+                    disabled={isCapturing}
+                  >
+                    <Ionicons name="camera" size={22} color={COLORS.white} />
+                    <Text style={styles.addHopeButtonText}>
+                      {isCapturing ? "Capturing…" : "Screenshot"}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </View>
-        </SafeAreaView>
-      </View>
-    </Modal>
+          </SafeAreaView>
+        </View>
+      </Modal>
+    </>
   );
 }
 
@@ -184,6 +202,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: "100%",
     maxHeight: "85%",
+    flex: 1,
     shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.35,
@@ -191,6 +210,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   modalContent: {
+    flex: 1,
     backgroundColor: COLORS.white,
     borderRadius: SIZES.modalRadius,
     borderWidth: 3,
@@ -198,7 +218,7 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
     padding: SIZES.paddingMedium,
     borderBottomWidth: 2,
@@ -246,23 +266,12 @@ const styles = StyleSheet.create({
     width: "100%",
   },
     modalBody: {
+    flex: 1,
     backgroundColor: COLORS.background,
-    minHeight: "80%",
-    border: COLORS.primary,
-    borderBottomLeftRadius: SIZES.modalRadius,
-    borderBottomRightRadius: SIZES.modalRadius,
     padding: SIZES.paddingLarge,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.85,
-    shadowRadius: 10,
-    elevation: 12,
   },
   flatList: {
-    flex:1,
-    minHeight:"100%",
-    borderBottomWidth: 2,
-    borderBottomColor: COLORS.primary,
+    flex: 1,
   },
   flatListContent: {
     justifyContent: "flex-start",
@@ -293,8 +302,6 @@ const styles = StyleSheet.create({
     paddingRight: SIZES.paddingMedium,
   },
   modalFooter: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
     padding: SIZES.paddingMedium,
     borderTopWidth: 2,
     borderTopColor: COLORS.primary,
@@ -302,17 +309,64 @@ const styles = StyleSheet.create({
   addHopeButton: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: COLORS.primary,
-    paddingVertical: 10,
-    paddingHorizontal: 18,
+    paddingVertical: 14,
     borderRadius: SIZES.navButtonRadius,
-    gap: 6,
+    gap: 8,
   },
   addHopeButtonText: {
     color: COLORS.white,
     fontFamily: FONTS.body,
     fontSize: 18,
     fontWeight: "bold",
+  },
+
+  // Off-screen screenshot capture styles
+  offscreenCapture: {
+    position: "absolute",
+    left: -9999,
+    top: 0,
+  },
+  screenshotCard: {
+    backgroundColor: COLORS.background,
+    padding: 32,
+    width: 360,
+  },
+  screenshotTitle: {
+    fontFamily: FONTS.logo,
+    fontSize: 42,
+    color: COLORS.primary,
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  screenshotDate: {
+    fontFamily: FONTS.body,
+    fontSize: 18,
+    color: COLORS.primary,
+    textAlign: "center",
+    marginBottom: 24,
+  },
+  screenshotItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 16,
+    gap: 10,
+  },
+  screenshotBullet: {
+    fontFamily: FONTS.body,
+    fontSize: 22,
+    color: COLORS.primary,
+    lineHeight: 30,
+  },
+  screenshotItemText: {
+    flex: 1,
+    fontFamily: FONTS.hopeItem,
+    fontWeight: "700",
+    fontSize: 20,
+    color: COLORS.primary,
+    lineHeight: 30,
+    flexWrap: "wrap",
   },
 });
 

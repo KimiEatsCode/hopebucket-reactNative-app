@@ -72,7 +72,6 @@ function NavBar() {
   const setShowListModal = modalContext.setShowListModal;
   const showAddField = modalContext.showAddField;
   const setShowAddField = modalContext.setShowAddField;
-  const setTriggerScreenshot = modalContext.setTriggerScreenshot;
 
   const toggleListModal = () => setShowListModal(!showListModal);
   const inputRef = useRef(null);
@@ -241,7 +240,7 @@ function NavBar() {
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>View</Text>
+                <Text style={styles.navButtonText}>List</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -257,19 +256,6 @@ function NavBar() {
               </TouchableOpacity>
             )}
 
-            {totalHope >= 3 ? (
-              <TouchableOpacity
-                style={[styles.navButton, styles.flexGrow1]}
-                onPress={() => setTriggerScreenshot(true)}
-              >
-                <Ionicons
-                  name="camera-outline"
-                  size={SIZES.iconFont}
-                  color={COLORS.white}
-                />
-                <Text style={styles.navButtonText}>Screenshot</Text>
-              </TouchableOpacity>
-            ) : null}
             <TouchableOpacity
               style={[styles.navButton, styles.flexGrow1]}
               onPress={() => setShowQuoteModal(true)}
@@ -293,7 +279,7 @@ function NavBar() {
                 size={SIZES.iconFont}
                 color={COLORS.white}
               />
-              <Text style={styles.navButtonText}>View</Text>
+              <Text style={styles.navButtonText}>List</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -312,6 +298,7 @@ function NavBar() {
               />
               <Text style={styles.navButtonText}>Add</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={[styles.navButton, styles.flexGrow1]}
               onPress={() => setShowQuoteModal(true)}
