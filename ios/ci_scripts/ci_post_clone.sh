@@ -1,26 +1,19 @@
 #!/bin/sh
 set -e
 
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
-echo "=== [1/4] Installing Node.js ==="
-# Install node if not already present; upgrade if it is
-if command -v node >/dev/null 2>&1; then
-  echo "Node already available: $(node --version)"
-else
-  brew install node
-fi
+echo "=== [1/3] Installing Node.js ==="
+brew install node
+echo "Node: $(node --version) | npm: $(npm --version) | pod: $(pod --version)"
 
-echo "=== Node version: $(node --version) ==="
-echo "=== npm version:  $(npm --version) ==="
-echo "=== pod version:  $(pod --version) ==="
-
-echo "=== [2/4] Installing npm dependencies ==="
+echo "=== [2/3] Installing npm dependencies ==="
 cd "$CI_PRIMARY_REPOSITORY_PATH"
 npm install
 
-echo "=== [3/4] Installing CocoaPods dependencies ==="
+echo "=== [3/3] Installing CocoaPods dependencies ==="
 cd ios
-pod install --repo-update
+pod install
 
-echo "=== [4/4] Done ==="
+echo "=== Done ==="
