@@ -1474,6 +1474,28 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-view-shot (5.1.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - React-NativeModulesApple (0.81.5):
     - hermes-engine
     - React-callinvoker
@@ -1920,7 +1942,7 @@ PODS:
     - ReactNativeDependencies
     - RNWorklets
     - Yoga
-  - RNWorklets (0.7.2):
+  - RNWorklets (0.7.4):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1942,9 +1964,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNWorklets/worklets (= 0.7.2)
+    - RNWorklets/worklets (= 0.7.4)
     - Yoga
-  - RNWorklets/worklets (0.7.2):
+  - RNWorklets/worklets (0.7.4):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1966,9 +1988,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNWorklets/worklets/apple (= 0.7.2)
+    - RNWorklets/worklets/apple (= 0.7.4)
     - Yoga
-  - RNWorklets/worklets/apple (0.7.2):
+  - RNWorklets/worklets/apple (0.7.4):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2047,6 +2069,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2194,6 +2217,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-view-shot:
+    :path: "../node_modules/react-native-view-shot"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-oscompat:
@@ -2267,7 +2292,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   EASClient: 40dd9e740684782610c49becab2643782ea1a20c
-  EXConstants: 8aebf75a1f4087bd9d5c4e8e45b57daf6dab2c29
+  EXConstants: fce59a631a06c4151602843667f7cfe35f81e271
   EXJSONUtils: 1d3e4590438c3ee593684186007028a14b3686cd
   EXManifests: a8d97683e5c7a3b026ffbd58559c64dc655b747b
   Expo: aadbcc8c6c14ff3105a9154f1683cb1424ff0d2a
@@ -2320,6 +2345,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 9050ee10c19f4f7fca8963d0211b2854d624973e
   React-microtasksnativemodule: f775db9e991c6f3b8ccbc02bfcde22770f96e23b
   react-native-safe-area-context: 37e680fc4cace3c0030ee46e8987d24f5d3bdab2
+  react-native-view-shot: a0290bf30540d830b4afb30e200e8b7dca2f2a9e
   React-NativeModulesApple: 8969913947d5b576de4ed371a939455a8daf28aa
   React-oscompat: ce47230ed20185e91de62d8c6d139ae61763d09c
   React-perflogger: 02b010e665772c7dcb859d85d44c1bfc5ac7c0e4
@@ -2353,9 +2379,9 @@ SPEC CHECKSUMS:
   ReactNativeDependencies: 71ce9c28beb282aa720ea7b46980fff9669f428a
   RNCAsyncStorage: 3a4f5e2777dae1688b781a487923a08569e27fe4
   RNReanimated: e5c702a3e24cc1c68b2de67671713f35461678f4
-  RNWorklets: 2fb11aebe21ea76d0c5456e92d2f23e0cad91a68
+  RNWorklets: eb8d899de8701d58c6a634b8468ce2a6db3113b2
   Yoga: 5934998fbeaef7845dbf698f698518695ab4cd1a
 
-PODFILE CHECKSUM: 99434b15568557b6d1ab1382aca02ed327ecf001
+PODFILE CHECKSUM: 0a44a130833b55d740d4d78b5a9885634c93c9fc
 
 COCOAPODS: 1.16.2
