@@ -228,9 +228,49 @@ function NavBar() {
 
       {/* Bottom Navigation Bar */}
       <View style={styles.navBar}>
-        {showNewList ? (
-          <>
-            {totalHope >= 3 ? (
+        <View style={styles.navBarRow}>
+          {showNewList ? (
+            <>
+              {totalHope >= 3 ? (
+                <TouchableOpacity
+                  style={[styles.navButton, styles.flexGrow1]}
+                  onPress={toggleListModal}
+                >
+                  <Ionicons
+                    name="document-outline"
+                    size={SIZES.iconFont}
+                    color={COLORS.white}
+                  />
+                  <Text style={styles.navButtonText}>List</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={[styles.navButton, styles.newListButton, styles.flexGrow1]}
+                  onPress={handleNewList}
+                >
+                  <Ionicons
+                    name="document-text-outline"
+                    size={SIZES.iconFont}
+                    color={COLORS.white}
+                  />
+                  <Text style={styles.navButtonText}>New List</Text>
+                </TouchableOpacity>
+              )}
+
+              <TouchableOpacity
+                style={[styles.navButton, styles.flexGrow1]}
+                onPress={() => setShowQuoteModal(true)}
+              >
+                <Ionicons
+                  name="chatbubble-ellipses"
+                  size={SIZES.iconFont}
+                  color={COLORS.white}
+                />
+                <Text style={styles.navButtonText}>Quotes</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
               <TouchableOpacity
                 style={[styles.navButton, styles.flexGrow1]}
                 onPress={toggleListModal}
@@ -242,76 +282,38 @@ function NavBar() {
                 />
                 <Text style={styles.navButtonText}>List</Text>
               </TouchableOpacity>
-            ) : (
+
               <TouchableOpacity
-                style={[styles.navButton, styles.newListButton, styles.flexGrow1]}
-                onPress={handleNewList}
+                style={[
+                  styles.navButton,
+                  styles.flexGrow1,
+                  totalHope >= 3 && styles.disabledButton,
+                ]}
+                onPress={handleOpen}
+                disabled={totalHope >= 3}
               >
                 <Ionicons
-                  name="document-text-outline"
+                  name="add-circle"
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>New List</Text>
+                <Text style={styles.navButtonText}>Add</Text>
               </TouchableOpacity>
-            )}
 
-            <TouchableOpacity
-              style={[styles.navButton, styles.flexGrow1]}
-              onPress={() => setShowQuoteModal(true)}
-            >
-              <Ionicons
-                name="chatbubble-ellipses"
-                size={SIZES.iconFont}
-                color={COLORS.white}
-              />
-              <Text style={styles.navButtonText}>Quotes</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <TouchableOpacity
-              style={[styles.navButton, styles.flexGrow1]}
-              onPress={toggleListModal}
-            >
-              <Ionicons
-                name="document-outline"
-                size={SIZES.iconFont}
-                color={COLORS.white}
-              />
-              <Text style={styles.navButtonText}>List</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.navButton,
-                styles.flexGrow1,
-                totalHope >= 3 && styles.disabledButton,
-              ]}
-              onPress={handleOpen}
-              disabled={totalHope >= 3}
-            >
-              <Ionicons
-                name="add-circle"
-                size={SIZES.iconFont}
-                color={COLORS.white}
-              />
-              <Text style={styles.navButtonText}>Add</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.navButton, styles.flexGrow1]}
-              onPress={() => setShowQuoteModal(true)}
-            >
-              <Ionicons
-                name="chatbubble-ellipses"
-                size={SIZES.iconFont}
-                color={COLORS.white}
-              />
-              <Text style={styles.navButtonText}>Quotes</Text>
-            </TouchableOpacity>
-          </>
-        )}
+              <TouchableOpacity
+                style={[styles.navButton, styles.flexGrow1]}
+                onPress={() => setShowQuoteModal(true)}
+              >
+                <Ionicons
+                  name="chatbubble-ellipses"
+                  size={SIZES.iconFont}
+                  color={COLORS.white}
+                />
+                <Text style={styles.navButtonText}>Quotes</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
       </View>
     </>
   );
@@ -391,12 +393,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    flexDirection: "row",
-    gap: 10,
     paddingHorizontal: 10,
     paddingTop: 12,
     paddingBottom: Platform.OS === "ios" ? 34 : 14,
     backgroundColor: COLORS.background,
+  },
+  navBarRow: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    gap: 10,
+    width: "100%",
   },
   navButton: {
     backgroundColor: COLORS.primary,

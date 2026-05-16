@@ -25,11 +25,16 @@ import { QuoteContextProvider } from "./src/contexts/QuoteContext";
 import Bucket from "./src/components/Bucket";
 import NavBar from "./src/components/NavBar";
 import ListModal from "./src/components/ListModal";
+import WelcomeModal from "./src/components/WelcomeModal";
+
+// Hooks
+import { useAsyncStorage } from "./src/hooks/useAsyncStorage";
 
 import { COLORS, FONTS, SIZES } from "./src/styles/theme";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
+  const [hasSeenWelcome, setHasSeenWelcome, welcomeLoaded] = useAsyncStorage("hasSeenWelcome", false);
   const [fontsLoaded] = useFonts({
     BagelFatOneRegular: require("./src/fonts/BagelFatOne-Regular.ttf"),
     Cabin_400Regular,
@@ -37,7 +42,7 @@ function AppContent() {
     Roboto_400Regular,
   });
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !welcomeLoaded) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={COLORS.primary} />
@@ -69,6 +74,12 @@ function AppContent() {
 
                 {/* Bottom Navigation */}
                 <NavBar />
+
+                {/* Welcome modal — shown on first launch only */}
+                <WelcomeModal
+                  visible={welcomeLoaded && !hasSeenWelcome}
+                  onClose={() => setHasSeenWelcome(true)}
+                />
               </View>
             </SafeAreaView>
           </QuoteContextProvider>
