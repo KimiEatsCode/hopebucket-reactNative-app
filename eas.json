@@ -20,9 +20,6 @@
       "ios": {
         "appleId": "sarahkimirettig@gmail.com",
         "ascAppId": "6758913831"
-      },
-      "android": {
-        "serviceAccountKeyPath": "./google-service-account-key.json"
       }
     }
   }

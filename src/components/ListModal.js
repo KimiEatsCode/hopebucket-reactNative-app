@@ -90,13 +90,14 @@ function ListModal() {
         <Ionicons name="remove-circle-outline" size={30} color={COLORS.deleteButton} />
       </TouchableOpacity>
       <Text style={styles.hopeItemText}>{item.value}</Text>
+    
     </View>
   );
 
   const headerText =
     totalHope >= 3
-      ? `Congrats! ${totalHope} of 3 Completed.`
-      : `${dayOfWeek}, ${mm}/${dd1}/${yyyy} — ${totalHope} of 3`;
+      ? `Congrats! ${'\n'}${totalHope} of 3 Completed`
+      : `${dayOfWeek} ${mm}/${dd1}/${yyyy} (${totalHope} /3)`;
 
   return (
     <>
@@ -108,6 +109,7 @@ function ListModal() {
       >
         <View style={styles.screenshotCard}>
           <Text style={styles.screenshotTitle}>HopeBucket</Text>
+          <Text style={styles.screenshotUrl}><a href="https://hopebucket.com">hopebucket.com</a> </Text>
           <Text style={styles.screenshotDate}>{todayStr}</Text>
           {[...list].reverse().map((item) => (
             <View key={String(item.id)} style={styles.screenshotItem}>
@@ -142,8 +144,8 @@ function ListModal() {
               <View style={styles.modalBody}>
                 {totalHope === 0 ? (
                   <View style={styles.emptyStateContainer}>
-                    <Text style={styles.emptyStateTitle}>Happy {todayStr}!</Text>
-                    <Text style={styles.instructions}>
+                   
+                    <Text style={styles.instructions}>{'\n'}
                       Add 3 items of hope to fill up your HopeBucket!
                     </Text>
                   </View>
@@ -333,12 +335,19 @@ const styles = StyleSheet.create({
     padding: 32,
     width: 360,
   },
-  screenshotTitle: {
-    fontFamily: FONTS.logo,
-    fontSize: 42,
+    screenshotTitle: {
+      fontFamily: FONTS.logo,
+      fontSize: 42,
+      color: COLORS.primary,
+      textAlign: "center",
+      marginBottom: 4,
+    },
+  screenshotUrl: {
+    fontFamily: FONTS.body,
+    fontSize: 18,
     color: COLORS.primary,
     textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 24,
   },
   screenshotDate: {
     fontFamily: FONTS.body,

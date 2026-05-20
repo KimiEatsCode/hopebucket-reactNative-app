@@ -24,11 +24,11 @@ export const FONTS = {
 
 export const SIZES = {
   logoFont: 55,
-  headingFont: 30,
+  headingFont: 24,
   subheadingFont: 28,
   bodyFont: 18,
   hopeItemFont: 20,
-  hopeCountFont: 35,
+  hopeCountFont: 32,
   iconFont: 30,
   navButtonRadius: 10,
   modalRadius: 15,
