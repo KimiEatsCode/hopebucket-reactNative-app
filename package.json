@@ -7,7 +7,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "build:ios": "eas build --platform ios --profile production",
-    "submit:ios": "eas submit --platform ios"
+    "submit:ios": "eas submit --platform ios",
+    "android": "expo run:android"
   },
   "dependencies": {
     "@expo-google-fonts/cabin": "^0.4.2",
@@ -39,6 +40,7 @@
   "private": true,
   "devDependencies": {
     "babel-preset-expo": "^55.0.21",
-    "eas-cli": "^16.32.0"
+    "eas-cli": "^16.32.0",
+    "@react-native-community/cli": "latest"
   }
 }

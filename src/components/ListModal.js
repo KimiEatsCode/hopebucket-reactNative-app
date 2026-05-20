@@ -107,16 +107,18 @@ function ListModal() {
         options={{ format: "png", quality: 1 }}
         style={styles.offscreenCapture}
       >
-        <View style={styles.screenshotCard}>
-          <Text style={styles.screenshotTitle}>HopeBucket</Text>
-          <Text style={styles.screenshotUrl}><a href="https://hopebucket.com">hopebucket.com</a> </Text>
-          <Text style={styles.screenshotDate}>{todayStr}</Text>
-          {[...list].reverse().map((item) => (
-            <View key={String(item.id)} style={styles.screenshotItem}>
-              <Text style={styles.screenshotBullet}>{"\u2022"}</Text>
-              <Text style={styles.screenshotItemText}>{item.value}</Text>
-            </View>
-          ))}
+        <View style={styles.screenshotOuter}>
+          <View style={styles.screenshotCard}>
+            <Text style={styles.screenshotTitle}>HopeBucket</Text>
+            <Text style={styles.screenshotUrl}>hopebucket.com</Text>
+            <Text style={styles.screenshotDate}>{todayStr}</Text>
+            {[...list].reverse().map((item) => (
+              <View key={String(item.id)} style={styles.screenshotItem}>
+                <Text style={styles.screenshotBullet}>{"\u2022"}</Text>
+                <Text style={styles.screenshotItemText}>{item.value}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       </ViewShot>
 
@@ -323,12 +325,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-
   // Off-screen screenshot capture styles
   offscreenCapture: {
     position: "absolute",
     left: -9999,
     top: 0,
+  },
+  screenshotOuter: {
+    backgroundColor: COLORS.white,
+    padding: SIZES.paddingLarge,
   },
   screenshotCard: {
     backgroundColor: COLORS.background,
