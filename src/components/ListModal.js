@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   emptyStateContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingHorizontal: SIZES.paddingMedium,
   },
   emptyStateTitle: {
