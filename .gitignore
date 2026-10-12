@@ -138,3 +138,6 @@ dist
 google-service-account-key.json
 publishing-plan.txt
 /docs
+
+# macOS finder file
+.DS_Store
