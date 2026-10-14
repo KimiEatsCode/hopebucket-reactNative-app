@@ -20,6 +20,7 @@ import { ExpContextProvider } from "./src/contexts/ExpContext";
 import { ListContextProvider } from "./src/contexts/ListContext";
 import { ModalContextProvider } from "./src/contexts/ModalContext";
 import { QuoteContextProvider } from "./src/contexts/QuoteContext";
+import { ValuesContextProvider } from "./src/contexts/ValuesContext";
 
 // Components
 import Bucket from "./src/components/Bucket";
@@ -55,33 +56,35 @@ function AppContent() {
       <ListContextProvider>
         <ModalContextProvider>
           <QuoteContextProvider>
-            <SafeAreaView style={styles.safeArea}>
-              <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-              <View
-                style={[
-                  styles.container,
-                  { paddingTop: 10 },
-                ]}
-              >
-                {/* Logo */}
-                <Text style={styles.logoName}>HopeBucket</Text>
+            <ValuesContextProvider>
+              <SafeAreaView style={styles.safeArea}>
+                <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+                <View
+                  style={[
+                    styles.container,
+                    { paddingTop: 10 },
+                  ]}
+                >
+                  {/* Logo */}
+                  <Text style={styles.logoName}>HopeBucket</Text>
 
-                {/* Main Bucket Screen */}
-                <Bucket />
+                  {/* Main Bucket Screen */}
+                  <Bucket />
 
-                {/* List Modal (hidden until toggled) */}
-                <ListModal />
+                  {/* List Modal (hidden until toggled) */}
+                  <ListModal />
 
-                {/* Bottom Navigation */}
-                <NavBar />
+                  {/* Bottom Navigation */}
+                  <NavBar />
 
-                {/* Welcome modal — shown on first launch only */}
-                <WelcomeModal
-                  visible={welcomeLoaded && !hasSeenWelcome}
-                  onClose={() => setHasSeenWelcome(true)}
-                />
-              </View>
-            </SafeAreaView>
+                  {/* Welcome modal — shown on first launch only */}
+                  <WelcomeModal
+                    visible={welcomeLoaded && !hasSeenWelcome}
+                    onClose={() => setHasSeenWelcome(true)}
+                  />
+                </View>
+              </SafeAreaView>
+            </ValuesContextProvider>
           </QuoteContextProvider>
         </ModalContextProvider>
       </ListContextProvider>

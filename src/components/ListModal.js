@@ -89,8 +89,14 @@ function ListModal() {
       >
         <Ionicons name="remove-circle-outline" size={30} color={COLORS.deleteButton} />
       </TouchableOpacity>
-      <Text style={styles.hopeItemText}>{item.value}</Text>
-    
+      <View style={styles.hopeItemContent}>
+        <Text style={styles.hopeItemText}>{item.value}</Text>
+        {item.tag ? (
+          <View style={styles.tagBadge}>
+            <Text style={styles.tagBadgeText}>{item.tag}</Text>
+          </View>
+        ) : null}
+      </View>
     </View>
   );
 
@@ -294,8 +300,10 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingRight: 8,
   },
-  hopeItemText: {
+  hopeItemContent: {
     flex: 1,
+  },
+  hopeItemText: {
     fontFamily: FONTS.hopeItem,
     fontWeight: "700",
     fontSize: SIZES.hopeItemFont,
@@ -304,6 +312,19 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     flexWrap: "wrap",
     paddingRight: SIZES.paddingMedium,
+  },
+  tagBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    marginTop: 4,
+  },
+  tagBadgeText: {
+    fontFamily: FONTS.body,
+    fontSize: 14,
+    color: COLORS.white,
   },
   modalFooter: {
     padding: SIZES.paddingMedium,

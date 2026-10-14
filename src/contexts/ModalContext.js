@@ -6,6 +6,7 @@ export const ModalContextProvider = (props) => {
   const [showListModal, setShowListModal] = useState(false);
   const [showAddField, setShowAddField] = useState(false);
   const [triggerScreenshot, setTriggerScreenshot] = useState(false);
+  const [showValuesModal, setShowValuesModal] = useState(false);
 
   return (
     <ModalContext.Provider
@@ -16,6 +17,8 @@ export const ModalContextProvider = (props) => {
         setShowAddField,
         triggerScreenshot,
         setTriggerScreenshot,
+        showValuesModal,
+        setShowValuesModal,
       }}
     >
       {props.children}

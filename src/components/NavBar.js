@@ -15,7 +15,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { ListContext } from "../contexts/ListContext";
 import { ExpContext } from "../contexts/ExpContext";
 import { ModalContext } from "../contexts/ModalContext";
+import { ValuesContext } from "../contexts/ValuesContext";
 import QuoteModal from "./QuoteModal";
+import ValuesModal from "./ValuesModal";
 import { COLORS, FONTS, SIZES } from "../styles/theme";
 
 const SUGGESTIONS = [
@@ -57,6 +59,9 @@ function NavBar() {
   const [showNewList, setShowListLinks] = useState(false);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [input, setInput] = useState("");
+  const [selectedTag, setSelectedTag] = useState(null);
+
+  const { values = [] } = useContext(ValuesContext);
 
   const expContext = useContext(ExpContext);
   const expDate = expContext.expDate;
@@ -72,6 +77,8 @@ function NavBar() {
   const setShowListModal = modalContext.setShowListModal;
   const showAddField = modalContext.showAddField;
   const setShowAddField = modalContext.setShowAddField;
+  const showValuesModal = modalContext.showValuesModal;
+  const setShowValuesModal = modalContext.setShowValuesModal;
 
   const toggleListModal = () => setShowListModal(!showListModal);
   const inputRef = useRef(null);
@@ -131,9 +138,11 @@ function NavBar() {
       const newItem = {
         id: Math.random(),
         value: input,
+        tag: selectedTag || null,
       };
       setList((prevList) => [...prevList, newItem]);
       setInput("");
+      setSelectedTag(null);
       setShowAddField(false);
     }
   }
@@ -149,7 +158,10 @@ function NavBar() {
     }
   };
 
-  const handleClose = () => setShowAddField(false);
+  const handleClose = () => {
+    setSelectedTag(null);
+    setShowAddField(false);
+  };
 
   const handleSuggestion = (suggestion) => {
     setInput(suggestion);
@@ -212,6 +224,42 @@ function NavBar() {
               onSubmitEditing={addItem}
             />
 
+            {/* Value Tag Selector */}
+            {values.length > 0 ? (
+              <>
+                <Text style={styles.tagLabel}>Tag a value (optional):</Text>
+                <ScrollView
+                  horizontal
+                  keyboardShouldPersistTaps="handled"
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.tagScroll}
+                  contentContainerStyle={styles.tagContainer}
+                >
+                  {values.map((v) => (
+                    <TouchableOpacity
+                      key={String(v.id)}
+                      style={[
+                        styles.tagChip,
+                        selectedTag === v.text && styles.tagChipSelected,
+                      ]}
+                      onPress={() =>
+                        setSelectedTag(selectedTag === v.text ? null : v.text)
+                      }
+                    >
+                      <Text
+                        style={[
+                          styles.tagChipText,
+                          selectedTag === v.text && styles.tagChipTextSelected,
+                        ]}
+                      >
+                        {v.text}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </>
+            ) : null}
+
             {/* Confirm Button */}
             <TouchableOpacity style={styles.confirmButton} onPress={addItem}>
               <Ionicons
@@ -225,6 +273,7 @@ function NavBar() {
         </KeyboardAvoidingView>
       </Modal>
       <QuoteModal visible={showQuoteModal} onClose={() => setShowQuoteModal(false)} />
+      <ValuesModal visible={showValuesModal} onClose={() => setShowValuesModal(false)} />
 
       {/* Bottom Navigation Bar */}
       <View style={styles.navBar}>
@@ -268,6 +317,18 @@ function NavBar() {
                 />
                 <Text style={styles.navButtonText}>Quotes</Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.navButton, styles.flexGrow1]}
+                onPress={() => setShowValuesModal(true)}
+              >
+                <Ionicons
+                  name="heart-outline"
+                  size={SIZES.iconFont}
+                  color={COLORS.white}
+                />
+                <Text style={styles.navButtonText}>Values</Text>
+              </TouchableOpacity>
             </>
           ) : (
             <>
@@ -310,6 +371,18 @@ function NavBar() {
                   color={COLORS.white}
                 />
                 <Text style={styles.navButtonText}>Quotes</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.navButton, styles.flexGrow1]}
+                onPress={() => setShowValuesModal(true)}
+              >
+                <Ionicons
+                  name="heart-outline"
+                  size={SIZES.iconFont}
+                  color={COLORS.white}
+                />
+                <Text style={styles.navButtonText}>Values</Text>
               </TouchableOpacity>
             </>
           )}
@@ -370,6 +443,38 @@ const styles = StyleSheet.create({
     minHeight: 100,
     marginBottom: 16,
     color: COLORS.textDark,
+  },
+  tagLabel: {
+    fontFamily: FONTS.body,
+    fontSize: 18,
+    color: COLORS.primary,
+    marginBottom: 8,
+  },
+  tagScroll: {
+    marginBottom: 16,
+    maxHeight: 48,
+  },
+  tagContainer: {
+    gap: 8,
+  },
+  tagChip: {
+    borderWidth: 2,
+    borderColor: COLORS.primary,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: COLORS.white,
+  },
+  tagChipSelected: {
+    backgroundColor: COLORS.primary,
+  },
+  tagChipText: {
+    fontFamily: FONTS.body,
+    fontSize: 18,
+    color: COLORS.primary,
+  },
+  tagChipTextSelected: {
+    color: COLORS.white,
   },
   confirmButton: {
     backgroundColor: COLORS.primary,
