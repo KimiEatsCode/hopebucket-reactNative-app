@@ -18,7 +18,8 @@ import { ModalContext } from "../contexts/ModalContext";
 import { ValuesContext } from "../contexts/ValuesContext";
 import QuoteModal from "./QuoteModal";
 import ValuesModal from "./ValuesModal";
-import { COLORS, FONTS, SIZES } from "../styles/theme";
+import { getStoreShot } from "../storeScreenshots";
+import { COLORS, FONTS, MAX_HOPE_ITEMS, SIZES } from "../styles/theme";
 
 const SUGGESTIONS = [
   "I am grateful for ",
@@ -56,10 +57,18 @@ function isExpired(expirationDateStr) {
 }
 
 function NavBar() {
+  const storeShot = getStoreShot();
   const [showNewList, setShowListLinks] = useState(false);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
-  const [input, setInput] = useState("");
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [input, setInput] = useState(
+    storeShot.scene === "add-hope"
+      ? "I am grateful for a quiet morning and a warm cup of tea."
+      : ""
+  );
+  const [selectedTag, setSelectedTag] = useState(
+    storeShot.scene === "add-hope" ? "Gratitude" : null
+  );
+  const [hopeFieldKey, setHopeFieldKey] = useState(0);
 
   const { values = [] } = useContext(ValuesContext);
 
@@ -116,7 +125,7 @@ function NavBar() {
   }, [listIsLoaded, expContext.isLoaded, expDate, setList]);
 
   const handleNewList = () => {
-    if (totalHope < 3) {
+    if (totalHope < MAX_HOPE_ITEMS) {
       setShowListLinks(false);
       expContext.setListDate(getTomorrow());
       setList([]);
@@ -125,12 +134,12 @@ function NavBar() {
 
   useEffect(() => {
     const shouldShowNewList =
-      totalHope === 3 || !expDate || isExpired(expDate) || expDate !== getTomorrow();
+      totalHope >= MAX_HOPE_ITEMS || !expDate || isExpired(expDate) || expDate !== getTomorrow();
     setShowListLinks(shouldShowNewList);
   }, [totalHope, expDate]);
 
   function addItem() {
-    if (list.length >= 3) {
+    if (list.length >= MAX_HOPE_ITEMS) {
       setShowAddField(false);
       return;
     }
@@ -143,12 +152,15 @@ function NavBar() {
       setList((prevList) => [...prevList, newItem]);
       setInput("");
       setSelectedTag(null);
+      setHopeFieldKey((key) => key + 1);
       setShowAddField(false);
     }
   }
 
   const handleOpen = () => {
-    if (totalHope < 3) {
+    if (totalHope < MAX_HOPE_ITEMS) {
+      setInput("");
+      setSelectedTag(null);
       setShowAddField(true);
       setTimeout(() => {
         if (inputRef.current) {
@@ -211,6 +223,7 @@ function NavBar() {
 
             {/* Text Input */}
             <TextInput
+              key={hopeFieldKey}
               ref={inputRef}
               style={styles.textInput}
               placeholderTextColor="#999"
@@ -267,7 +280,7 @@ function NavBar() {
                 size={32}
                 color={COLORS.white}
               />
-              <Text style={styles.confirmButtonText}>Add</Text>
+              <Text style={styles.confirmButtonText}>Add Hope</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -280,7 +293,7 @@ function NavBar() {
         <View style={styles.navBarRow}>
           {showNewList ? (
             <>
-              {totalHope >= 3 ? (
+              {totalHope >= MAX_HOPE_ITEMS ? (
                 <TouchableOpacity
                   style={[styles.navButton, styles.flexGrow1]}
                   onPress={toggleListModal}
@@ -307,15 +320,15 @@ function NavBar() {
               )}
 
               <TouchableOpacity
-                style={[styles.navButton, styles.flexGrow1]}
+                style={[styles.navButton, styles.addHopeIconButton]}
                 onPress={() => setShowQuoteModal(true)}
+                accessibilityLabel="Quotes"
               >
                 <Ionicons
                   name="chatbubble-ellipses"
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>Quotes</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -347,30 +360,30 @@ function NavBar() {
               <TouchableOpacity
                 style={[
                   styles.navButton,
-                  styles.flexGrow1,
-                  totalHope >= 3 && styles.disabledButton,
+                  styles.addHopeIconButton,
+                  totalHope >= MAX_HOPE_ITEMS && styles.disabledButton,
                 ]}
                 onPress={handleOpen}
-                disabled={totalHope >= 3}
+                disabled={totalHope >= MAX_HOPE_ITEMS}
+                accessibilityLabel="Add Hope"
               >
                 <Ionicons
                   name="add-circle"
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>Add</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.navButton, styles.flexGrow1]}
+                style={[styles.navButton, styles.addHopeIconButton]}
                 onPress={() => setShowQuoteModal(true)}
+                accessibilityLabel="Quotes"
               >
                 <Ionicons
                   name="chatbubble-ellipses"
                   size={SIZES.iconFont}
                   color={COLORS.white}
                 />
-                <Text style={styles.navButtonText}>Quotes</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -526,6 +539,9 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     opacity: 0.5,
+  },
+  addHopeIconButton: {
+    paddingHorizontal: 12,
   },
   flexGrow1: {
     flex: 1,

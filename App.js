@@ -26,7 +26,9 @@ import { ValuesContextProvider } from "./src/contexts/ValuesContext";
 import Bucket from "./src/components/Bucket";
 import NavBar from "./src/components/NavBar";
 import ListModal from "./src/components/ListModal";
+import QuoteModal from "./src/components/QuoteModal";
 import WelcomeModal from "./src/components/WelcomeModal";
+import { getActiveStoreShotModals, getStoreShot } from "./src/storeScreenshots";
 
 // Hooks
 import { useAsyncStorage } from "./src/hooks/useAsyncStorage";
@@ -35,6 +37,8 @@ import { COLORS, FONTS, SIZES } from "./src/styles/theme";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
+  const storeShot = getStoreShot();
+  const storeShotModals = getActiveStoreShotModals();
   const [hasSeenWelcome, setHasSeenWelcome, welcomeLoaded] = useAsyncStorage("hasSeenWelcome", false);
   const [fontsLoaded] = useFonts({
     BagelFatOneRegular: require("./src/fonts/BagelFatOne-Regular.ttf"),
@@ -51,12 +55,16 @@ function AppContent() {
     );
   }
 
+  const showWelcome = storeShot.enabled
+    ? storeShot.scene === "welcome"
+    : welcomeLoaded && !hasSeenWelcome;
+
   return (
-    <ExpContextProvider>
-      <ListContextProvider>
-        <ModalContextProvider>
-          <QuoteContextProvider>
-            <ValuesContextProvider>
+    <ExpContextProvider key={`exp-${storeShot.scene || "live"}`}>
+      <ListContextProvider key={`list-${storeShot.scene || "live"}`}>
+        <ModalContextProvider key={`modal-${storeShot.scene || "live"}`}>
+          <QuoteContextProvider key={`quote-${storeShot.scene || "live"}`}>
+            <ValuesContextProvider key={`values-${storeShot.scene || "live"}`}>
               <SafeAreaView style={styles.safeArea}>
                 <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
                 <View
@@ -77,9 +85,13 @@ function AppContent() {
                   {/* Bottom Navigation */}
                   <NavBar />
 
+                  {storeShotModals.showQuoteModal ? (
+                    <QuoteModal visible onClose={() => {}} />
+                  ) : null}
+
                   {/* Welcome modal — shown on first launch only */}
                   <WelcomeModal
-                    visible={welcomeLoaded && !hasSeenWelcome}
+                    visible={showWelcome}
                     onClose={() => setHasSeenWelcome(true)}
                   />
                 </View>

@@ -1,12 +1,14 @@
 import React, { createContext, useState } from "react";
+import { getActiveStoreShotModals } from "../storeScreenshots";
 
 export const ModalContext = createContext();
 
 export const ModalContextProvider = (props) => {
-  const [showListModal, setShowListModal] = useState(false);
-  const [showAddField, setShowAddField] = useState(false);
+  const storeShotModals = getActiveStoreShotModals();
+  const [showListModal, setShowListModal] = useState(storeShotModals.showListModal);
+  const [showAddField, setShowAddField] = useState(storeShotModals.showAddField);
   const [triggerScreenshot, setTriggerScreenshot] = useState(false);
-  const [showValuesModal, setShowValuesModal] = useState(false);
+  const [showValuesModal, setShowValuesModal] = useState(storeShotModals.showValuesModal);
 
   return (
     <ModalContext.Provider

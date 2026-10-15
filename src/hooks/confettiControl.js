@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useRef } from "react";
 import LottieView from "lottie-react-native";
 import { ListContext } from "../contexts/ListContext";
+import { MAX_HOPE_ITEMS } from "../styles/theme";
 
 const LottieControlConfetti = () => {
   const lottieRef = useRef(null);
@@ -9,12 +10,12 @@ const LottieControlConfetti = () => {
   const totalHope = list.length;
 
   useEffect(() => {
-    if (!lottieRef.current || totalHope !== 3) return;
+    if (!lottieRef.current || totalHope !== MAX_HOPE_ITEMS) return;
 
     lottieRef.current.play();
   }, [totalHope]);
 
-  if (totalHope !== 3) {
+  if (totalHope !== MAX_HOPE_ITEMS) {
     return null;
   }
 

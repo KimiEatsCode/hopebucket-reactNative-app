@@ -22,6 +22,8 @@ export const FONTS = {
   roboto: 'Roboto_400Regular',
 };
 
+export const MAX_HOPE_ITEMS = 10;
+
 export const SIZES = {
   logoFont: 55,
   headingFont: 24,

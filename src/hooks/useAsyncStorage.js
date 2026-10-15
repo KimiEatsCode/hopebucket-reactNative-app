@@ -1,13 +1,22 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getActiveStoreShotSeed } from "../storeScreenshots";
 
 export function useAsyncStorage(key, initialValue) {
-  const [storedValue, setStoredValue] = useState(initialValue);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const storeShotSeed = getActiveStoreShotSeed(key);
+  const [storedValue, setStoredValue] = useState(
+    storeShotSeed !== undefined ? storeShotSeed : initialValue
+  );
+  const [isLoaded, setIsLoaded] = useState(storeShotSeed !== undefined);
   const isInitialMount = useRef(true);
 
   // Load from AsyncStorage on mount
   useEffect(() => {
+    if (storeShotSeed !== undefined) {
+      setIsLoaded(true);
+      return;
+    }
+
     const loadValue = async () => {
       try {
         const item = await AsyncStorage.getItem(key);
@@ -21,10 +30,13 @@ export function useAsyncStorage(key, initialValue) {
       }
     };
     loadValue();
-  }, [key]);
+  }, [key, storeShotSeed]);
 
   // Save to AsyncStorage whenever storedValue changes (skip initial mount)
   useEffect(() => {
+    if (storeShotSeed !== undefined) {
+      return;
+    }
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;

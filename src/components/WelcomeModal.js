@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS, FONTS, SIZES } from "../styles/theme";
+import { COLORS, FONTS, MAX_HOPE_ITEMS, SIZES } from "../styles/theme";
 
 const STEPS = [
   {
@@ -18,7 +18,7 @@ const STEPS = [
     step: "STEP 1",
     title: "Add what gives you hope",
     description:
-      "Tap Add in the bar below and write up to 3 things that give you hope today — big or small.",
+      `Tap Add in the bar below and write up to ${MAX_HOPE_ITEMS} things that give you hope today — big or small.`,
   },
   {
     icon: "water-outline",
@@ -32,7 +32,7 @@ const STEPS = [
     step: "STEP 3",
     title: "Add inspiring quotes",
     description:
-      "Tap Quotes in the bar below to save up to 3 personal quotes that inspire you — they'll appear in your bucket.",
+      "Tap the talk bubble in the bar below to save up to 3 personal quotes that inspire you — they'll appear in your bucket.",
   },
 ];
 
@@ -84,11 +84,11 @@ function WelcomeModal({ visible, onClose }) {
           >
             {STEPS.map((item, index) => (
               <View key={index} style={styles.stepCard}>
-                <View style={[styles.iconCircle, index === 0 && styles.iconCircleLight]}>
+                <View style={styles.iconCircle}>
                   <Ionicons
                     name={item.icon}
                     size={30}
-                    color={index === 0 ? COLORS.primary : COLORS.white}
+                    color={COLORS.white}
                   />
                 </View>
                 <View style={styles.stepText}>
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: FONTS.heading,
-    fontSize: 26,
+    fontSize: 22,
     color: COLORS.primary,
     marginBottom: 4,
   },
@@ -188,9 +188,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
-  },
-  iconCircleLight: {
-    backgroundColor: "#e8eef8",
   },
   stepText: {
     flex: 1,

@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: FONTS.heading,
-    fontSize: 26,
+    fontSize: 22,
     color: COLORS.primary,
   },
   closeButton: {

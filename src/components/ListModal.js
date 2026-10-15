@@ -14,7 +14,7 @@ import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import { ListContext } from "../contexts/ListContext";
 import { ModalContext } from "../contexts/ModalContext";
-import { COLORS, FONTS, SIZES } from "../styles/theme";
+import { COLORS, FONTS, MAX_HOPE_ITEMS, SIZES } from "../styles/theme";
 
 function ListModal() {
   const listContext = useContext(ListContext);
@@ -73,7 +73,6 @@ function ListModal() {
   const mm = today.getMonth() + 1;
   const yyyy = today.getFullYear();
   const dayOfWeek = today.toLocaleDateString("en-US", { weekday: "long" });
-  const todayStr = dayOfWeek + " " + mm + "/" + dd1 + "/" + yyyy;
 
   function deleteItem(key) {
     listContext.setList((prevList) =>
@@ -101,9 +100,9 @@ function ListModal() {
   );
 
   const headerText =
-    totalHope >= 3
-      ? `Congrats! ${'\n'}${totalHope} of 3 Completed`
-      : `${dayOfWeek} ${mm}/${dd1}/${yyyy} (${totalHope} /3)`;
+    totalHope >= MAX_HOPE_ITEMS
+      ? `Congrats! ${'\n'}${totalHope} of ${MAX_HOPE_ITEMS} Completed`
+      : `${dayOfWeek} ${mm}/${dd1}/${yyyy} (${totalHope} /${MAX_HOPE_ITEMS})`;
 
   return (
     <>
@@ -116,12 +115,17 @@ function ListModal() {
         <View style={styles.screenshotOuter}>
           <View style={styles.screenshotCard}>
             <Text style={styles.screenshotTitle}>HopeBucket</Text>
-            <Text style={styles.screenshotUrl}>hopebucket.com</Text>
-            <Text style={styles.screenshotDate}>{todayStr}</Text>
             {[...list].reverse().map((item) => (
               <View key={String(item.id)} style={styles.screenshotItem}>
                 <Text style={styles.screenshotBullet}>{"\u2022"}</Text>
-                <Text style={styles.screenshotItemText}>{item.value}</Text>
+                <View style={styles.screenshotItemBody}>
+                  <Text style={styles.screenshotItemText}>{item.value}</Text>
+                  {item.tag ? (
+                    <View style={styles.screenshotTag}>
+                      <Text style={styles.screenshotTagText}>{item.tag}</Text>
+                    </View>
+                  ) : null}
+                </View>
               </View>
             ))}
           </View>
@@ -154,7 +158,7 @@ function ListModal() {
                   <View style={styles.emptyStateContainer}>
                    
                     <Text style={styles.instructions}>{'\n'}
-                      Add 3 items of hope to fill up your HopeBucket!
+                      Add {MAX_HOPE_ITEMS} items of hope to fill up your HopeBucket!
                     </Text>
                   </View>
                 ) : (
@@ -172,12 +176,12 @@ function ListModal() {
 
               {/* Footer */}
               <View style={styles.modalFooter}>
-                {totalHope < 3 ? (
+                {totalHope < MAX_HOPE_ITEMS ? (
                   <TouchableOpacity
                     style={styles.addHopeButton}
                     onPress={handleAddHope}
                   >
-                    <Ionicons name="add-circle" size={22} color={COLORS.white} />
+                    <Ionicons name="add-circle" size={SIZES.iconFont} color={COLORS.white} />
                     <Text style={styles.addHopeButtonText}>Add Hope</Text>
                   </TouchableOpacity>
                 ) : (
@@ -237,7 +241,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     flex: 1,
     fontFamily: FONTS.heading,
-    fontSize: SIZES.subheadingFont,
+    fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
     color: COLORS.primary,
@@ -317,8 +321,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     backgroundColor: COLORS.primaryLight,
     borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
     marginTop: 4,
   },
   tagBadgeText: {
@@ -366,22 +370,8 @@ const styles = StyleSheet.create({
       fontSize: 42,
       color: COLORS.primary,
       textAlign: "center",
-      marginBottom: 4,
+      marginBottom: 24,
     },
-  screenshotUrl: {
-    fontFamily: FONTS.body,
-    fontSize: 18,
-    color: COLORS.primary,
-    textAlign: "center",
-    marginBottom: 24,
-  },
-  screenshotDate: {
-    fontFamily: FONTS.body,
-    fontSize: 18,
-    color: COLORS.primary,
-    textAlign: "center",
-    marginBottom: 24,
-  },
   screenshotItem: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -394,14 +384,29 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     lineHeight: 30,
   },
-  screenshotItemText: {
+  screenshotItemBody: {
     flex: 1,
+  },
+  screenshotItemText: {
     fontFamily: FONTS.hopeItem,
     fontWeight: "700",
     fontSize: 20,
     color: COLORS.primary,
     lineHeight: 30,
     flexWrap: "wrap",
+  },
+  screenshotTag: {
+    alignSelf: "flex-start",
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    marginTop: 4,
+  },
+  screenshotTagText: {
+    fontFamily: FONTS.body,
+    fontSize: 14,
+    color: COLORS.white,
   },
 });
 

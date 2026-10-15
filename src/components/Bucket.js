@@ -16,13 +16,18 @@ import { ModalContext } from "../contexts/ModalContext";
 import { QuoteContext } from "../contexts/QuoteContext";
 import LottieControlConfetti from "../hooks/confettiControl";
 import LottieControlBucket from "../hooks/bucketControl";
-import { COLORS, FONTS, SIZES } from "../styles/theme";
+import { DEMO_QUOTES } from "../storeScreenshots/scenes";
+import { getStoreShot } from "../storeScreenshots";
+import { COLORS, FONTS, MAX_HOPE_ITEMS, SIZES } from "../styles/theme";
 
 function Bucket() {
+  const storeShot = getStoreShot();
   const { list = [] } = useContext(ListContext);
   const { quotes = [] } = useContext(QuoteContext);
   const totalHope = list.length;
-  const [selectedQuote, setSelectedQuote] = useState(null);
+  const [selectedQuote, setSelectedQuote] = useState(
+    storeShot.scene === "quote-card" ? DEMO_QUOTES[0].text : null
+  );
   const floatValues = useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -71,10 +76,10 @@ function Bucket() {
   }, [floatValues]);
 
   const getMessage = () => {
-    if (totalHope < 3) {
+    if (totalHope < MAX_HOPE_ITEMS) {
       return "Add hope to fill up your HopeBucket!";
     }
-    if (totalHope === 3) {
+    if (totalHope >= MAX_HOPE_ITEMS) {
       return "Congrats! You filled your HopeBucket!";
     }
     return "";
@@ -92,7 +97,7 @@ function Bucket() {
           onPress={toggleListModal}
           activeOpacity={0.7}
         >
-          <Text style={styles.hopeCount}>{totalHope} of 3</Text>
+          <Text style={styles.hopeCount}>{totalHope} of {MAX_HOPE_ITEMS}</Text>
           <LottieControlBucket />
         </TouchableOpacity>
 

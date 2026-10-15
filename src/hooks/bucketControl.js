@@ -1,6 +1,9 @@
 import React, { useEffect, useContext, useRef } from "react";
 import LottieView from "lottie-react-native";
 import { ListContext } from "../contexts/ListContext";
+import { MAX_HOPE_ITEMS } from "../styles/theme";
+
+const BUCKET_FULL_FRAME = 150;
 
 const LottieControlBucket = () => {
   const lottieRef = useRef(null);
@@ -11,15 +14,15 @@ const LottieControlBucket = () => {
   useEffect(() => {
     if (!lottieRef.current) return;
 
-    if (totalHope === 0) {
+    if (totalHope <= 0) {
       lottieRef.current.reset();
-    } else if (totalHope === 1) {
-      lottieRef.current.play(0, 40);
-    } else if (totalHope === 2) {
-      lottieRef.current.play(40, 70);
-    } else if (totalHope === 3) {
-      lottieRef.current.play(70, 150);
+      return;
     }
+
+    const clamped = Math.min(totalHope, MAX_HOPE_ITEMS);
+    const endFrame = Math.round((clamped / MAX_HOPE_ITEMS) * BUCKET_FULL_FRAME);
+    const startFrame = Math.round(((clamped - 1) / MAX_HOPE_ITEMS) * BUCKET_FULL_FRAME);
+    lottieRef.current.play(startFrame, endFrame);
   }, [totalHope, list]);
 
   return (
