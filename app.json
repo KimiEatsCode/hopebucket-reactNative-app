@@ -10,7 +10,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.hopebucket.app",
       "deploymentTarget": "17.0",
-      "buildNumber": "8",
+      "buildNumber": "9",
       "appleTeamId": "23WR58HN4U",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
