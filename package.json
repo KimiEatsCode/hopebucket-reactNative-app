@@ -43,6 +43,6 @@
   "devDependencies": {
     "@react-native-community/cli": "latest",
     "babel-preset-expo": "~57.0.0",
-    "eas-cli": "^16.32.0"
+    "eas-cli": "^27.9.0"
   }
 }
